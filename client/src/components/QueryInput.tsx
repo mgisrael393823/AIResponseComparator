@@ -20,19 +20,19 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!input.trim() || isLoading) return;
+
     onSubmit(input.trim());
     setInput("");
+    setSelectedFile(null);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      if (!input.trim() || isLoading) return;
-      onSubmit(input.trim());
-      setInput("");
+      handleSubmit();
     }
   };
 
