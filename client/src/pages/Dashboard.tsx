@@ -61,8 +61,8 @@ export default function Dashboard() {
             accentColor="blue"
           />
           <ResponsePanel
-            title="Perplexity"
-            response={data?.perplexity}
+            title="Gemini"
+            response={data?.gemini}
             isLoading={isLoading}
             accentColor="purple"
           />

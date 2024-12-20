@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { getOpenAIResponse } from "./services/openai";
 import { getClaudeResponse } from "./services/claude";
+import { getGeminiResponse } from "./services/gemini";
 
 export function registerRoutes(app: Express): Server {
   app.post("/api/compare", async (req, res) => {
@@ -12,14 +13,15 @@ export function registerRoutes(app: Express): Server {
       }
 
       // Execute API calls in parallel and handle individual failures
-      const [openaiResponse, claudeResponse] = await Promise.allSettled([
+      const [openaiResponse, geminiResponse, claudeResponse] = await Promise.allSettled([
         getOpenAIResponse(query),
+        getGeminiResponse(query),
         getClaudeResponse(query)
       ]);
 
       const responses = {
         openai: openaiResponse.status === 'fulfilled' ? openaiResponse.value : 'Error: Failed to get OpenAI response',
-        perplexity: "This is a simulated Perplexity response to: " + query,
+        gemini: geminiResponse.status === 'fulfilled' ? geminiResponse.value : 'Error: Failed to get Gemini response',
         claude: claudeResponse.status === 'fulfilled' ? claudeResponse.value : 'Error: Failed to get Claude response',
       };
 

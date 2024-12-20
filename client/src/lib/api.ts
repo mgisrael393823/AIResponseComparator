@@ -1,6 +1,6 @@
 export interface AIResponse {
   openai?: string;
-  perplexity?: string;
+  gemini?: string;
   claude?: string;
 }
 
