@@ -1,5 +1,5 @@
 import { useState, KeyboardEvent } from "react";
-import { Send } from "lucide-react";
+import { Send, RefreshCw, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -28,24 +28,44 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3">
-      <Textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Send a message..."
-        className="min-h-[44px] max-h-[200px] resize-none bg-white border-gray-200 focus:border-gray-300 rounded-lg"
-        disabled={isLoading}
-      />
-      <Button 
-        type="submit" 
-        size="icon"
-        disabled={!input.trim() || isLoading}
-        className="h-[44px] w-[44px] shrink-0 bg-gray-900 hover:bg-gray-800"
-      >
-        <Send className="h-5 w-5" />
-      </Button>
-    </form>
+    <div className="flex items-center gap-2">
+      <button className="p-2 hover:bg-gray-100 rounded-full text-gray-500">
+        <RefreshCw className="w-5 h-5" />
+      </button>
+
+      <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-2 bg-white rounded-lg border border-gray-200 px-3">
+        <button type="button" className="p-2 text-gray-500 hover:text-gray-700">
+          <RefreshCw className="w-5 h-5" />
+        </button>
+
+        <Textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Send a message..."
+          className="min-h-[44px] max-h-[200px] resize-none border-0 focus:ring-0 p-2"
+          disabled={isLoading}
+        />
+
+        <div className="flex items-center gap-2">
+          <button type="button" className="p-2 text-gray-500 hover:text-gray-700">
+            <Mic className="w-5 h-5" />
+          </button>
+          <Button 
+            type="submit" 
+            size="icon"
+            disabled={!input.trim() || isLoading}
+            className="h-8 w-8 rounded-full bg-transparent hover:bg-gray-100"
+          >
+            <Send className="h-4 w-4 text-gray-700" />
+          </Button>
+        </div>
+      </form>
+
+      <button className="p-2 hover:bg-gray-100 rounded-full text-gray-500">
+        <RefreshCw className="w-5 h-5" />
+      </button>
+    </div>
   );
 };
 
