@@ -1,13 +1,17 @@
 import OpenAI from 'openai';
 
+// Log API key presence (not the actual key)
+console.log("Checking OpenAI API key configuration...");
 if (!process.env.OPENAI_API_KEY) {
   throw new Error('OPENAI_API_KEY must be set in environment variables');
 }
 
-// Validate API key format
+// Validate API key format and check for spaces
 const apiKey = process.env.OPENAI_API_KEY.trim();
-if (!apiKey.startsWith('sk-')) {
-  throw new Error('Invalid OpenAI API key format. It should start with "sk-" or "sk-proj-"');
+console.log("API Key Length:", apiKey.length);
+
+if (!(apiKey.startsWith('sk-'))) {
+  throw new Error('Invalid OpenAI API key format. It should start with "sk-"');
 }
 
 // Initialize OpenAI client
@@ -16,6 +20,7 @@ try {
   openai = new OpenAI({
     apiKey: apiKey,
   });
+  console.log("OpenAI client initialized successfully");
 } catch (error) {
   console.error('Failed to initialize OpenAI client:', error);
   throw new Error('Failed to initialize OpenAI client. Please check your API key configuration.');
