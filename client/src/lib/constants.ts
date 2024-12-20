@@ -1,19 +1,22 @@
 export const aiProfiles = [
   {
     name: 'Gemini',
-    logo: '/AI Logo/gemini-logo.png',
+    logo: 'assets/gemini-logo.png',
+    fallbackText: 'G',
     alt: 'Gemini AI Logo',
     title: 'Start chatting with Gemini'
   },
   {
     name: 'ChatGPT',
-    logo: '/AI Logo/chatgpt-logo.png',
+    logo: 'assets/chatgpt-logo.png',
+    fallbackText: 'GPT',
     alt: 'ChatGPT Logo',
     title: 'Start chatting with ChatGPT'
   },
   {
     name: 'Claude',
-    logo: '/AI Logo/claude-logo.png',
+    logo: 'assets/claude-logo.png',
+    fallbackText: 'C',
     alt: 'Claude AI Logo',
     title: 'Start chatting with Claude'
   }
