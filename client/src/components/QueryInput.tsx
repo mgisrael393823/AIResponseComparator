@@ -101,13 +101,13 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
         </div>
 
         {/* Input field */}
-        <div className="flex-1 flex items-center bg-white rounded-lg border border-gray-200 px-4">
+        <div className="flex-1 mx-4">
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Send a message..."
-            className={`min-h-[${breakpoint === 'desktop' ? '64' : '56'}px] py-4 max-h-[200px] resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-${breakpoint === 'mobile' ? '[13px]' : 'sm'}`}
+            className={`w-full min-h-[${breakpoint === 'desktop' ? '64' : '56'}px] py-4 px-4 resize-none rounded-lg border border-gray-200 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-${breakpoint === 'mobile' ? '[13px]' : 'sm'}`}
             disabled={isLoading}
           />
         </div>
