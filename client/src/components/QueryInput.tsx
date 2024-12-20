@@ -8,7 +8,7 @@ interface QueryInputProps {
   isLoading: boolean;
 }
 
-export default function QueryInput({ onSubmit, isLoading }: QueryInputProps) {
+const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
   const [input, setInput] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,4 +43,6 @@ export default function QueryInput({ onSubmit, isLoading }: QueryInputProps) {
       </Button>
     </form>
   );
-}
+};
+
+export default QueryInput;

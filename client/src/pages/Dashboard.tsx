@@ -4,16 +4,17 @@ import QueryInput from "@/components/QueryInput";
 import ResponsePanel from "@/components/ResponsePanel";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
+import type { AIResponse } from "@/lib/api";
 
 export default function Dashboard() {
   const [query, setQuery] = useState("");
   const { toast } = useToast();
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery<AIResponse>({
     queryKey: ['/api/compare', query],
     queryFn: async () => {
       if (!query) return null;
-      const res = await fetch(`/api/compare`, {
+      const res = await fetch('/api/compare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
@@ -41,14 +42,14 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 text-center">AI Response Comparison</h1>
-        
+
         <div className="max-w-3xl mx-auto mb-8">
           <QueryInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
 
         {error && (
           <Card className="p-4 mb-8 bg-destructive/10 text-destructive">
-            {error.message}
+            {(error as Error).message}
           </Card>
         )}
 

@@ -9,12 +9,12 @@ interface ResponsePanelProps {
   accentColor: string;
 }
 
-export default function ResponsePanel({
+const ResponsePanel = ({
   title,
   response,
   isLoading,
   accentColor,
-}: ResponsePanelProps) {
+}: ResponsePanelProps) => {
   const colorClasses = {
     blue: "border-blue-500/20 hover:border-blue-500/30",
     purple: "border-purple-500/20 hover:border-purple-500/30",
@@ -45,4 +45,6 @@ export default function ResponsePanel({
       </CardContent>
     </Card>
   );
-}
+};
+
+export default ResponsePanel;
