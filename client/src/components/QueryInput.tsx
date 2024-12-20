@@ -37,9 +37,16 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
     }
   };
 
-  const iconButtonClasses = `p-2 text-gray-500 hover:bg-gray-100 rounded-md transition-colors ${
-    breakpoint === 'mobile' ? 'touch-manipulation' : ''
-  }`;
+  const iconButtonClasses = `
+    p-2 text-gray-500
+    hover:bg-gray-100 hover:-translate-y-0.5
+    active:translate-y-0 active:bg-gray-200
+    focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2
+    rounded-md transition-all duration-200
+    cursor-pointer relative
+    flex items-center justify-center
+    ${breakpoint === 'mobile' ? 'touch-manipulation min-h-[44px] min-w-[44px]' : ''}
+  `.trim();
 
   return (
     <div className="sticky bottom-0 mx-4 mb-4">
@@ -66,9 +73,14 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
             <button 
               type="button"
               aria-label="Model selection"
-              className={iconButtonClasses}
+              className={`${iconButtonClasses} group`}
+              role="button"
+              tabIndex={0}
             >
               <Wand2 className="w-5 h-5" />
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                Select model
+              </span>
             </button>
 
             {breakpoint !== 'mobile' && (
@@ -76,33 +88,53 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
                 <button 
                   type="button"
                   aria-label="Code block"
-                  className={iconButtonClasses}
+                  className={`${iconButtonClasses} group`}
+                  role="button"
+                  tabIndex={0}
                 >
                   <Code className="w-5 h-5" />
+                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                    Insert code block
+                  </span>
                 </button>
 
                 <button 
                   type="button"
                   aria-label="Reply"
-                  className={iconButtonClasses}
+                  className={`${iconButtonClasses} group`}
+                  role="button"
+                  tabIndex={0}
                 >
                   <CornerUpRight className="w-5 h-5" />
+                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                    Reply to message
+                  </span>
                 </button>
 
                 <button 
                   type="button"
                   aria-label="Refresh"
-                  className={iconButtonClasses}
+                  className={`${iconButtonClasses} group`}
+                  role="button"
+                  tabIndex={0}
                 >
                   <RefreshCw className="w-5 h-5" />
+                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                    Refresh response
+                  </span>
                 </button>
 
                 <button 
                   type="button"
                   aria-label="More options"
-                  className={iconButtonClasses}
+                  className={`${iconButtonClasses} group`}
+                  role="button"
+                  tabIndex={0}
                 >
                   <MoreHorizontal className="w-5 h-5" />
+                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                    More options
+                  </span>
                 </button>
               </>
             )}
@@ -111,15 +143,15 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
           {/* Right side controls */}
           <div className="flex items-center gap-4">
             {breakpoint !== 'mobile' && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 group px-2 py-1 rounded-md hover:bg-gray-100 transition-colors cursor-pointer">
                 <Checkbox 
                   id="sync"
-                  className="h-4 w-4"
+                  className="h-4 w-4 transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-200"
                   aria-label="Sync messages"
                 />
                 <label 
                   htmlFor="sync"
-                  className="text-sm text-gray-600 whitespace-nowrap"
+                  className="text-sm text-gray-600 whitespace-nowrap select-none"
                 >
                   Sync
                 </label>
@@ -129,9 +161,14 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
             <button 
               type="button"
               aria-label="Voice input"
-              className={iconButtonClasses}
+              className={`${iconButtonClasses} group`}
+              role="button"
+              tabIndex={0}
             >
               <Mic className="w-5 h-5" />
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                Voice input
+              </span>
             </button>
           </div>
         </div>

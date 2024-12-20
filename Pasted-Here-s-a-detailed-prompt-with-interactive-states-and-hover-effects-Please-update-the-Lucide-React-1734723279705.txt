@@ -1,0 +1,153 @@
+Here's a detailed prompt with interactive states and hover effects:
+
+"Please update the Lucide React icons implementation with these complete specifications:
+
+1. Import and Base Setup:
+   ```javascript
+   import { 
+     Wand2,
+     Code2, 
+     Reply, 
+     RotateCcw, 
+     MoreHorizontal, 
+     Mic,
+     ImagePlus,
+     Check
+   } from 'lucide-react';
+   ```
+
+2. Icon States & Interactions:
+   ```css
+   .icon-button {
+     padding: 8px;
+     border-radius: 6px;
+     cursor: pointer;
+     transition: all 0.2s ease;
+     position: relative;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   }
+
+   .icon-button:hover {
+     background-color: #f3f4f6;
+     transform: translateY(-1px);
+   }
+
+   .icon-button:active {
+     transform: translateY(0px);
+     background-color: #e5e7eb;
+   }
+
+   .icon-button:focus {
+     outline: 2px solid #e5e7eb;
+     outline-offset: 2px;
+   }
+
+   .icon-button[data-active='true'] {
+     color: #2563eb;
+     background-color: #eff6ff;
+   }
+   ```
+
+3. Icon Props:
+   ```javascript
+   <IconComponent
+     size={20}
+     strokeWidth={2}
+     color="currentColor"
+     className="icon-button"
+     aria-label="[Action Name]"
+   />
+   ```
+
+4. Group Layout:
+   ```css
+   .icon-group {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     padding: 8px 16px;
+   }
+
+   .icon-group.left {
+     margin-right: auto;
+   }
+
+   .icon-group.right {
+     margin-left: auto;
+   }
+   ```
+
+5. Tooltip Implementation:
+   ```css
+   .icon-button::after {
+     content: attr(aria-label);
+     position: absolute;
+     bottom: 100%;
+     left: 50%;
+     transform: translateX(-50%);
+     padding: 4px 8px;
+     background-color: #1f2937;
+     color: white;
+     border-radius: 4px;
+     font-size: 12px;
+     opacity: 0;
+     visibility: hidden;
+     transition: all 0.2s ease;
+     white-space: nowrap;
+   }
+
+   .icon-button:hover::after {
+     opacity: 1;
+     visibility: visible;
+     transform: translateX(-50%) translateY(-8px);
+   }
+   ```
+
+6. Sync Checkbox Specific Styling:
+   ```css
+   .sync-container {
+     display: flex;
+     align-items: center;
+     gap: 4px;
+     padding: 4px 8px;
+     border-radius: 6px;
+     cursor: pointer;
+   }
+
+   .sync-container:hover {
+     background-color: #f3f4f6;
+   }
+
+   .sync-label {
+     font-size: 14px;
+     color: #6B7280;
+   }
+   ```
+
+7. Mobile Responsiveness:
+   ```css
+   @media (max-width: 640px) {
+     .icon-button {
+       padding: 6px;
+     }
+     
+     .icon-group {
+       gap: 4px;
+       padding: 8px;
+     }
+
+     .sync-label {
+       display: none;
+     }
+   }
+   ```
+
+8. Accessibility:
+   - Add proper aria-labels
+   - Ensure keyboard navigation
+   - Add role attributes
+   - Include focus visible states
+
+Would you like any additional details about animations, transitions, or specific interaction patterns?"
