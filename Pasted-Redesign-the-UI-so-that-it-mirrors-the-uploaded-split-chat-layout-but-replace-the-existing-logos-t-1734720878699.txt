@@ -1,0 +1,48 @@
+Redesign the UI so that it mirrors the uploaded split-chat layout, but replace the existing logos, titles, and model names with those for OpenAI (ChatGPT), Claude, and Gemini. Ensure the following elements align with my tool’s branding and intended functionality:
+
+Layout Requirements
+	1.	Three Split Panels:
+	•	Create three evenly spaced panels side-by-side, each representing a different AI tool:
+	•	Left Panel: Gemini
+	•	Center Panel: OpenAI (ChatGPT)
+	•	Right Panel: Claude
+	2.	Logos and Titles:
+	•	Replace existing logos with the respective tool icons:
+	•	Gemini: Google DeepMind logo.
+	•	OpenAI: OpenAI logo.
+	•	Claude: Anthropic logo.
+	•	Titles for each panel:
+	•	“Start chatting with Gemini”
+	•	“Start chatting with OpenAI (ChatGPT)”
+	•	“Start chatting with Claude”
+	3.	Model Instructions:
+	•	Under each title, display editable model instructions:
+	•	Example:
+“I want you to act as a rival chess player. We will say our moves in reciprocal order. In the beginning, I will be white. Also, please don’t explain your moves to me because we are rivals. After my first message, I will just write my move. Don’t forget to update the state of the board in your mind as we make moves.”
+	4.	Input Section:
+	•	Below each panel, include a text input field with:
+	•	Placeholder: “Send a message…”
+	•	Submit button for sending text to the respective AI tool.
+	•	Add relevant action buttons (e.g., sync, settings) to match the uploaded UI.
+
+Functionality Requirements
+	1.	AI Integration:
+	•	Gemini → Connect to Google DeepMind API.
+	•	OpenAI → Connect to OpenAI’s GPT API.
+	•	Claude → Connect to Anthropic API.
+	2.	Dynamic Interaction:
+	•	Each panel should send input to the respective AI API and display the response below the input field in a chat-like format.
+	3.	Styling:
+	•	Use a modern, minimalist design similar to the uploaded screenshot.
+	•	Include distinct color themes or accents for each panel to differentiate the tools:
+	•	Gemini: Green accents.
+	•	OpenAI: Blue accents.
+	•	Claude: Purple accents.
+	4.	Responsive Design:
+	•	Ensure the layout works seamlessly across desktop and mobile devices.
+
+Technical Implementation
+	•	Use React.js or a similar frontend framework for the interface.
+	•	Integrate with respective AI APIs for real-time responses.
+	•	Store user preferences (e.g., selected models, instructions) using local storage.
+

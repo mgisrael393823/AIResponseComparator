@@ -23,34 +23,27 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
       e.preventDefault();
       if (!input.trim() || isLoading) return;
       onSubmit(input.trim());
-      setInput(""); // Clear input after submission
+      setInput("");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <Textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Enter your question or message... (Press Enter to send, Shift+Enter for new line)"
-        className="min-h-[100px] resize-none"
+        placeholder="Send a message..."
+        className="min-h-[44px] max-h-[200px] resize-none"
         disabled={isLoading}
       />
       <Button 
         type="submit" 
+        size="icon"
         disabled={!input.trim() || isLoading}
-        className="w-full sm:w-auto"
+        className="h-[44px] w-[44px] shrink-0"
       >
-        {isLoading ? (
-          <span className="flex items-center gap-2">
-            Processing...
-          </span>
-        ) : (
-          <span className="flex items-center gap-2">
-            Send <Send className="w-4 h-4" />
-          </span>
-        )}
+        <Send className="h-5 w-5" />
       </Button>
     </form>
   );
