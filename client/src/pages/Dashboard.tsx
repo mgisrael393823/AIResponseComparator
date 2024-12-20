@@ -20,7 +20,7 @@ interface ChatPanelProps {
 
 const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: ChatPanelProps) => {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col min-h-0 h-full">
       <div className="flex items-center justify-between px-6 py-4 border-b">
         <div className="flex items-center gap-3">
           {icon}
@@ -36,7 +36,7 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
         </div>
       </div>
 
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="flex-1 p-6 overflow-y-auto min-h-0">
         <div className="text-sm text-gray-600 mb-6 bg-gray-50 rounded-lg p-4">
           <p className="font-medium mb-2">Model Instructions <span className="text-gray-400">(click to edit)</span></p>
           <p className="leading-relaxed">{MODEL_INSTRUCTIONS}</p>
@@ -53,7 +53,7 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
         ) : null}
       </div>
 
-      <div className="border-t">
+      <div className="mt-auto">
         <QueryInput onSubmit={onSubmit} isLoading={isLoading} />
       </div>
     </div>
@@ -94,7 +94,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-blue-100 to-green-100">
-      <div className="max-w-7xl mx-auto h-screen p-4">
+      <div className="container mx-auto h-screen max-w-[1280px] p-4">
         <div className="relative bg-white rounded-xl shadow-lg h-full overflow-hidden">
           {/* macOS window controls */}
           <div className="absolute top-4 left-4 flex gap-2">
@@ -111,8 +111,8 @@ export default function Dashboard() {
             </div>
           )}
 
-          <div className="flex h-full">
-            <div className="flex-1 border-r border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full divide-x divide-gray-200">
+            <div className="h-full">
               <ChatPanel
                 title="Gemini"
                 icon={<SiGoogle className="w-6 h-6 text-green-600" />}
@@ -123,7 +123,7 @@ export default function Dashboard() {
               />
             </div>
 
-            <div className="flex-1 border-r border-gray-200">
+            <div className="h-full">
               <ChatPanel
                 title="OpenAI"
                 icon={<SiOpenai className="w-6 h-6 text-blue-600" />}
@@ -134,7 +134,7 @@ export default function Dashboard() {
               />
             </div>
 
-            <div className="flex-1">
+            <div className="h-full">
               <ChatPanel
                 title="Claude"
                 icon={<Dices className="w-6 h-6 text-purple-600" />}
