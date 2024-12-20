@@ -11,11 +11,16 @@ export function registerRoutes(app: Express): Server {
         return res.status(400).json({ message: "Query is required" });
       }
 
-      // Get real OpenAI and Claude responses, keep Perplexity simulated for now
+      // Execute API calls in parallel and handle individual failures
+      const [openaiResponse, claudeResponse] = await Promise.allSettled([
+        getOpenAIResponse(query),
+        getClaudeResponse(query)
+      ]);
+
       const responses = {
-        openai: await getOpenAIResponse(query),
+        openai: openaiResponse.status === 'fulfilled' ? openaiResponse.value : 'Error: Failed to get OpenAI response',
         perplexity: "This is a simulated Perplexity response to: " + query,
-        claude: await getClaudeResponse(query),
+        claude: claudeResponse.status === 'fulfilled' ? claudeResponse.value : 'Error: Failed to get Claude response',
       };
 
       res.json(responses);

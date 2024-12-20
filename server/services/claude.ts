@@ -39,26 +39,30 @@ export async function getClaudeResponse(query: string): Promise<string> {
       messages: [{ role: "user", content: query }]
     });
 
-    const response = message.content[0].text;
-    if (!response) {
+    if (!message.content[0]?.text) {
       throw new Error("No response generated from Claude");
     }
 
     console.log('Successfully received response from Claude');
-    return response;
+    return message.content[0].text;
 
   } catch (error) {
     console.error("Claude API error details:", error);
 
     // Handle specific error cases
     if (error instanceof Error) {
-      if (error.message.includes('401')) {
+      const errorMsg = error.message.toLowerCase();
+
+      if (errorMsg.includes('credit balance') || errorMsg.includes('insufficient credits')) {
+        return "Claude API is currently unavailable (insufficient credits). Using fallback response instead.";
+      }
+      if (errorMsg.includes('401')) {
         throw new Error("Invalid Claude API key. Please check your API key configuration.");
       }
-      if (error.message.includes('429')) {
+      if (errorMsg.includes('429')) {
         throw new Error("Rate limit exceeded. Please try again later.");
       }
-      if (error.message.includes('500')) {
+      if (errorMsg.includes('500')) {
         throw new Error("Claude service is currently experiencing issues. Please try again later.");
       }
       throw new Error(`Claude API error: ${error.message}`);
