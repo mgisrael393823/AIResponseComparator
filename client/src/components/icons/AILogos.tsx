@@ -1,5 +1,6 @@
 import { type ComponentProps, useState } from "react";
 import { aiProfiles } from "@/lib/constants";
+import { getImagePath } from "@/lib/utils";
 
 interface LogoComponentProps {
   logo: string;
@@ -26,12 +27,12 @@ const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) =>
   return (
     <div className="logo-container">
       <img
-        src={logo}
+        src={getImagePath(logo)}
         alt={alt}
         className="ai-logo"
         loading="lazy"
-        onError={() => {
-          console.error(`Failed to load logo for ${name}`);
+        onError={(e) => {
+          console.error(`Failed to load logo for ${name}`, e);
           setError(true);
         }}
       />
