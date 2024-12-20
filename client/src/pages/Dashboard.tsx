@@ -6,6 +6,7 @@ import QueryInput from "@/components/QueryInput";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import type { AIResponse } from "@/lib/api";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 
 const MODEL_INSTRUCTIONS = `I want you to act as a rival chess player. We will say our moves in reciprocal order. In the beginning, I will be white. Also, please don't explain your moves to me because we are rivals. After my first message, I will just write my move. Don't forget to update the state of the board in your mind as we make moves.`;
 
@@ -63,6 +64,7 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
 export default function Dashboard() {
   const [query, setQuery] = useState("");
   const { toast } = useToast();
+  const breakpoint = useBreakpoint();
 
   const { data, isLoading, error, refetch } = useQuery<AIResponse>({
     queryKey: ['/api/compare', query],
@@ -92,6 +94,12 @@ export default function Dashboard() {
     }
   };
 
+  const containerClasses = {
+    mobile: "grid-cols-1",
+    tablet: "grid-cols-2",
+    desktop: "grid-cols-3",
+  }[breakpoint];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-blue-100 to-green-100">
       <div className="container mx-auto h-screen max-w-[1280px] p-4">
@@ -111,7 +119,7 @@ export default function Dashboard() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full divide-x divide-gray-200">
+          <div className={`grid ${containerClasses} h-full divide-x divide-gray-200`}>
             <div className="h-full">
               <ChatPanel
                 title="Gemini"
