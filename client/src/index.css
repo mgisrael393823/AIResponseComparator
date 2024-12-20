@@ -11,3 +11,13 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+@layer components {
+  .logo-container {
+    @apply w-12 h-12 mx-auto mb-3 flex items-center justify-center;
+  }
+
+  .ai-logo {
+    @apply w-full h-full object-contain border-0 m-0 p-0;
+  }
+}
