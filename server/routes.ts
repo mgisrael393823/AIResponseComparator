@@ -20,9 +20,10 @@ export function registerRoutes(app: Express): Server {
       res.json(responses);
     } catch (error) {
       console.error("Error processing AI comparison:", error);
-      res.status(500).json({ 
-        message: error instanceof Error ? error.message : "Failed to process AI comparison" 
-      });
+      const errorMessage = error instanceof Error ? error.message : "Failed to process AI comparison";
+      const statusCode = errorMessage.includes('API key') ? 401 : 500;
+
+      res.status(statusCode).json({ message: errorMessage });
     }
   });
 
