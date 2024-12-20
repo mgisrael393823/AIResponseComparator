@@ -31,7 +31,7 @@ const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) =>
         className="ai-logo"
         loading="lazy"
         onError={(e) => {
-          console.error(`Failed to load logo for ${name}`, e);
+          console.error(`Failed to load logo for ${name}:`, e);
           setError(true);
         }}
       />
@@ -39,7 +39,6 @@ const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) =>
   );
 };
 
-// Simplified logo components using the new LogoComponent
 export const GeminiLogo = (props: Omit<ComponentProps<"div">, "children">) => (
   <LogoComponent {...aiProfiles[0]} {...props} />
 );

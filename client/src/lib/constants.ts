@@ -1,23 +1,32 @@
 import { getImagePath } from "./utils";
 
-export const aiProfiles = [
+// Define interface for AI profile structure
+interface AIProfile {
+  name: string;
+  logo: string;
+  fallbackText: string;
+  alt: string;
+  title: string;
+}
+
+export const aiProfiles: AIProfile[] = [
   {
     name: 'Gemini',
-    logo: '/assets/gemini-logo.png',
+    logo: '/gemini-logo.png',  // Reference from public directory root
     fallbackText: 'G',
     alt: 'Gemini AI Logo',
     title: 'Start chatting with Gemini'
   },
   {
     name: 'ChatGPT',
-    logo: '/assets/chatgpt-logo.png',
+    logo: '/chatgpt-logo.png',
     fallbackText: 'GPT',
     alt: 'ChatGPT Logo',
     title: 'Start chatting with ChatGPT'
   },
   {
     name: 'Claude',
-    logo: '/assets/claude-logo.png',
+    logo: '/claude-logo.png',
     fallbackText: 'C',
     alt: 'Claude AI Logo',
     title: 'Start chatting with Claude'
