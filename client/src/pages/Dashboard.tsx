@@ -20,12 +20,26 @@ interface ChatPanelProps {
 }
 
 const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: ChatPanelProps) => {
+  const breakpoint = useBreakpoint();
+
+  const headerClasses = {
+    desktop: "text-lg px-6 py-4",
+    tablet: "text-base px-4 py-3",
+    mobile: "text-base px-3 py-3",
+  }[breakpoint];
+
+  const contentClasses = {
+    desktop: "p-6 gap-6",
+    tablet: "p-4 gap-4",
+    mobile: "p-3 gap-3",
+  }[breakpoint];
+
   return (
     <div className="flex flex-col min-h-0 h-full">
-      <div className="flex items-center justify-between px-6 py-4 border-b">
+      <div className={`flex items-center justify-between border-b ${headerClasses}`}>
         <div className="flex items-center gap-3">
           {icon}
-          <h2 className="text-lg font-semibold">Start chatting with {title}</h2>
+          <h2 className="font-semibold">Start chatting with {title}</h2>
         </div>
         <div className="flex items-center gap-3">
           <button className="p-2 hover:bg-gray-100 rounded transition-colors">
@@ -37,10 +51,10 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
         </div>
       </div>
 
-      <div className="flex-1 p-6 overflow-y-auto min-h-0">
+      <div className={`flex-1 overflow-y-auto min-h-0 ${contentClasses}`}>
         <div className="text-sm text-gray-600 mb-6 bg-gray-50 rounded-lg p-4">
           <p className="font-medium mb-2">Model Instructions <span className="text-gray-400">(click to edit)</span></p>
-          <p className="leading-relaxed">{MODEL_INSTRUCTIONS}</p>
+          <p className="leading-relaxed text-[13px] md:text-sm">{MODEL_INSTRUCTIONS}</p>
         </div>
 
         {isLoading ? (
@@ -50,7 +64,7 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
             <div className="h-4 bg-gray-200 rounded w-5/6"></div>
           </div>
         ) : response ? (
-          <div className="whitespace-pre-wrap">{response}</div>
+          <div className="whitespace-pre-wrap text-[13px] md:text-sm">{response}</div>
         ) : null}
       </div>
 
@@ -95,14 +109,14 @@ export default function Dashboard() {
   };
 
   const containerClasses = {
-    mobile: "grid-cols-1",
-    tablet: "grid-cols-2",
-    desktop: "grid-cols-3",
+    mobile: "grid-cols-1 p-3",
+    tablet: "grid-cols-2 p-4",
+    desktop: "grid-cols-3 p-6",
   }[breakpoint];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-blue-100 to-green-100">
-      <div className="container mx-auto h-screen max-w-[1280px] p-4">
+      <div className="container mx-auto h-[calc(100vh-48px)] max-w-[1280px] px-3 py-6 md:p-4 lg:p-6">
         <div className="relative bg-white rounded-xl shadow-lg h-full overflow-hidden">
           {/* macOS window controls */}
           <div className="absolute top-4 left-4 flex gap-2">
@@ -119,7 +133,7 @@ export default function Dashboard() {
             </div>
           )}
 
-          <div className={`grid ${containerClasses} h-full divide-x divide-gray-200`}>
+          <div className={`grid ${containerClasses} h-full divide-x divide-gray-200 transition-all duration-300`}>
             <div className="h-full">
               <ChatPanel
                 title="Gemini"
