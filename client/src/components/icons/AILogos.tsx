@@ -74,10 +74,10 @@ const AILogo = ({ src, alt, className, ...props }: AILogoProps) => {
   );
 };
 
-// Updated paths to use images directly from the root Images folder
+// Updated paths to use images from the AI Logo folder
 export const GeminiLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/gemini-logo.png"
+    src="/AI Logo/gemini-logo.png"
     alt="Gemini AI Logo"
     {...props}
   />
@@ -85,7 +85,7 @@ export const GeminiLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
 
 export const OpenAILogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/chatgpt-logo.png"
+    src="/AI Logo/chatgpt-logo.png"
     alt="ChatGPT Logo"
     {...props}
   />
@@ -93,7 +93,7 @@ export const OpenAILogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
 
 export const ClaudeLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/claude-logo.png"
+    src="/AI Logo/claude-logo.png"
     alt="Claude AI Logo"
     {...props}
   />
