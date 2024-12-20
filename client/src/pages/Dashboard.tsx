@@ -19,24 +19,18 @@ interface ChatPanelProps {
 }
 
 const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: ChatPanelProps) => {
-  const colorClasses = {
-    blue: "border-blue-500/20 hover:border-blue-500/30",
-    purple: "border-purple-500/20 hover:border-purple-500/30",
-    green: "border-green-500/20 hover:border-green-500/30",
-  }[accentColor] || "border-gray-200";
-
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full">
       <div className="flex items-center justify-between px-6 py-4 border-b">
         <div className="flex items-center gap-3">
           {icon}
           <h2 className="text-lg font-semibold">Start chatting with {title}</h2>
         </div>
         <div className="flex items-center gap-3">
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <button className="p-2 hover:bg-gray-100 rounded transition-colors">
             <Settings className="w-5 h-5 text-gray-600" />
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <button className="p-2 hover:bg-gray-100 rounded transition-colors">
             <RefreshCw className="w-5 h-5 text-gray-600" />
           </button>
         </div>
@@ -44,7 +38,7 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
 
       <div className="flex-1 p-6 overflow-auto">
         <div className="text-sm text-gray-600 mb-6 bg-gray-50 rounded-lg p-4">
-          <p className="font-medium mb-2">Model Instructions:</p>
+          <p className="font-medium mb-2">Model Instructions <span className="text-gray-400">(click to edit)</span></p>
           <p className="leading-relaxed">{MODEL_INSTRUCTIONS}</p>
         </div>
 
@@ -59,7 +53,7 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
         ) : null}
       </div>
 
-      <div className="p-6 border-t bg-gray-50">
+      <div className="border-t">
         <QueryInput onSubmit={onSubmit} isLoading={isLoading} />
       </div>
     </div>
@@ -99,47 +93,58 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="flex h-screen">
-        {error && (
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-            <Card className="p-4 bg-destructive/10 text-destructive">
-              {(error as Error).message}
-            </Card>
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-blue-100 to-green-100">
+      <div className="max-w-7xl mx-auto h-screen p-4">
+        <div className="relative bg-white rounded-xl shadow-lg h-full overflow-hidden">
+          {/* macOS window controls */}
+          <div className="absolute top-4 left-4 flex gap-2">
+            <div className="w-3 h-3 rounded-full bg-red-500" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+            <div className="w-3 h-3 rounded-full bg-green-500" />
           </div>
-        )}
 
-        <div className="flex-1 border-r border-gray-200">
-          <ChatPanel
-            title="Gemini"
-            icon={<SiGoogle className="w-6 h-6 text-green-600" />}
-            accentColor="green"
-            response={data?.gemini}
-            isLoading={isLoading}
-            onSubmit={handleSubmit}
-          />
-        </div>
+          {error && (
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+              <Card className="p-4 bg-destructive/10 text-destructive">
+                {(error as Error).message}
+              </Card>
+            </div>
+          )}
 
-        <div className="flex-1 border-r border-gray-200">
-          <ChatPanel
-            title="OpenAI"
-            icon={<SiOpenai className="w-6 h-6 text-blue-600" />}
-            accentColor="blue"
-            response={data?.openai}
-            isLoading={isLoading}
-            onSubmit={handleSubmit}
-          />
-        </div>
+          <div className="flex h-full">
+            <div className="flex-1 border-r border-gray-200">
+              <ChatPanel
+                title="Gemini"
+                icon={<SiGoogle className="w-6 h-6 text-green-600" />}
+                accentColor="green"
+                response={data?.gemini}
+                isLoading={isLoading}
+                onSubmit={handleSubmit}
+              />
+            </div>
 
-        <div className="flex-1">
-          <ChatPanel
-            title="Claude"
-            icon={<Dices className="w-6 h-6 text-purple-600" />}
-            accentColor="purple"
-            response={data?.claude}
-            isLoading={isLoading}
-            onSubmit={handleSubmit}
-          />
+            <div className="flex-1 border-r border-gray-200">
+              <ChatPanel
+                title="OpenAI"
+                icon={<SiOpenai className="w-6 h-6 text-blue-600" />}
+                accentColor="blue"
+                response={data?.openai}
+                isLoading={isLoading}
+                onSubmit={handleSubmit}
+              />
+            </div>
+
+            <div className="flex-1">
+              <ChatPanel
+                title="Claude"
+                icon={<Dices className="w-6 h-6 text-purple-600" />}
+                accentColor="purple"
+                response={data?.claude}
+                isLoading={isLoading}
+                onSubmit={handleSubmit}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

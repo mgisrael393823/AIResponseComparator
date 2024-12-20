@@ -1,0 +1,118 @@
+Please update the UI to match these specific layout and styling requirements:
+
+Container & Layout:
+
+Main container: max-width: 1280px, height: 100vh
+Add a backdrop gradient similar to the second image
+Add box-shadow to the main container: 0 4px 6px -1px rgb(0 0 0 / 0.1)
+Set background-color: white
+Add rounded corners to the container (border-radius: 12px)
+Add macOS-style window controls at the top (red, yellow, green dots)
+
+
+Split Panes:
+
+Divide into three equal columns (calc(33.33% - 1px))
+Add vertical divider lines (1px solid #e5e7eb)
+Each pane should have:
+
+Padding: 16px
+Full height with flex display
+Display: flex, flex-direction: column
+
+
+
+
+Header Section:
+
+Height: 56px
+Flex layout with space-between
+Model name text: 16px, font-weight: 500
+Settings and refresh icons on the right
+Add proper icon spacing (12px)
+
+
+Model Instructions:
+
+Gray text (#6b7280)
+Font-size: 14px
+Line-height: 1.5
+Padding: 16px 0
+Add '(click to edit)' text in lighter gray
+
+
+Message Input Area:
+
+Height: 56px
+Background: #f9fafb
+Border: 1px solid #e5e7eb
+Border-radius: 8px
+Padding: 8px 12px
+Display: flex, align-items: center
+Proper spacing between elements
+
+
+Input Icons:
+
+Left side:
+
+Model-specific icon with dropdown (▼)
+Code block icon
+Reply icon
+Refresh icon
+More options (...)
+
+
+Right side:
+
+'Sync' checkbox
+Microphone icon
+
+
+All icons should be:
+
+Size: 20px
+Color: #6b7280
+Hover: background-color: #f3f4f6
+Hover border-radius: 4px
+Padding: 8px
+Cursor: pointer
+
+
+
+
+Responsive Design:
+
+Desktop (>1280px):
+
+Three equal columns
+Fixed padding: 24px
+
+
+Tablet (768px - 1279px):
+
+Two columns
+Adjusted padding: 16px
+
+
+Mobile (<768px):
+
+Single column
+Full width
+Minimal padding: 12px
+
+
+
+
+Additional Details:
+
+Add smooth transitions (0.2s) for hover states
+Implement proper focus states for interactive elements
+Add subtle box-shadow to input area on focus
+Ensure consistent spacing between all elements
+Add proper aria-labels for accessibility
+Implement proper keyboard navigation
+
+
+
+Please maintain visual consistency with the reference image and ensure smooth responsive behavior across all screen sizes.
