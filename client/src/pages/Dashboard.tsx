@@ -67,8 +67,8 @@ export default function Dashboard() {
             accentColor="purple"
           />
           <ResponsePanel
-            title="Cloud AI"
-            response={data?.cloud}
+            title="Claude"
+            response={data?.claude}
             isLoading={isLoading}
             accentColor="green"
           />

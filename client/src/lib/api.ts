@@ -1,7 +1,7 @@
 export interface AIResponse {
   openai?: string;
   perplexity?: string;
-  cloud?: string;
+  claude?: string;
 }
 
 export async function compareResponses(query: string): Promise<AIResponse> {

@@ -14,7 +14,7 @@ export function registerRoutes(app: Express): Server {
       const responses = {
         openai: await getOpenAIResponse(query),
         perplexity: "This is a simulated Perplexity response to: " + query,
-        cloud: "This is a simulated Cloud AI response to: " + query,
+        claude: "This is a simulated Claude response to: " + query,
       };
 
       res.json(responses);
