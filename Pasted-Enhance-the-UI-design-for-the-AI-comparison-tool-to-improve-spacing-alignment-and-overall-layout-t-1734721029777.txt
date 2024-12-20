@@ -1,0 +1,33 @@
+Enhance the UI design for the AI comparison tool to improve spacing, alignment, and overall layout to make it closely resemble the previously uploaded screenshot. Focus on the following improvements:
+
+1. Spacing and Alignment
+	•	Add more spacing between the columns (Gemini, OpenAI, Claude) to ensure the layout feels less cramped.
+	•	Vertically align all content (titles, icons, and input areas) to maintain consistency across all columns.
+	•	Adjust padding around the Model Instructions area to create a cleaner and more breathable design.
+
+2. Icons and Headers
+	•	Ensure the icons (e.g., Gemini, OpenAI, Claude) are consistently sized and vertically aligned with the titles.
+	•	Add slight padding between the icons and titles for better readability.
+	•	Center-align the settings and sync icons above each column while ensuring equal spacing between these icons and the titles.
+
+3. Input Area
+	•	Increase the vertical padding for the text input field to make it larger and more inviting.
+	•	Add a subtle border or background color to the text input field for better visual separation.
+	•	Center the send button (arrow icon) vertically in relation to the input field and adjust spacing for a clean look.
+
+4. Column Borders
+	•	Add light, subtle vertical dividers between each column to visually separate them while maintaining a cohesive layout.
+
+5. Overall Aesthetic
+	•	Use a clean and modern font with consistent sizes across all elements (titles, instructions, input fields).
+	•	Slightly increase the width of each column to fill more horizontal space without overlapping.
+	•	Ensure responsiveness so the UI scales elegantly across different screen sizes.
+
+6. Header Layout Consistency
+	•	Move the sync and settings icons directly to the top-right corner of each column header for a cleaner and more professional look.
+	•	Add consistent padding above and below the header section.
+
+7. Test the Design
+	•	After implementing the changes, test the design on desktop and mobile views to ensure all elements remain visually appealing and functional.
+
+Make these updates and ensure the UI aligns with the professional and minimalistic style of the previously uploaded screenshot.

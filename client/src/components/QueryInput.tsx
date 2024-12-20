@@ -15,7 +15,7 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
     onSubmit(input.trim());
-    setInput(""); // Clear input after submission
+    setInput("");
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -28,20 +28,20 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-3">
       <Textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Send a message..."
-        className="min-h-[44px] max-h-[200px] resize-none"
+        className="min-h-[44px] max-h-[200px] resize-none bg-white border-gray-200 focus:border-gray-300 rounded-lg"
         disabled={isLoading}
       />
       <Button 
         type="submit" 
         size="icon"
         disabled={!input.trim() || isLoading}
-        className="h-[44px] w-[44px] shrink-0"
+        className="h-[44px] w-[44px] shrink-0 bg-gray-900 hover:bg-gray-800"
       >
         <Send className="h-5 w-5" />
       </Button>

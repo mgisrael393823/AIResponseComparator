@@ -26,39 +26,40 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
   }[accentColor] || "border-gray-200";
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-4 border-b">
-        <div className="flex items-center gap-2">
+    <div className="flex flex-col h-full bg-white">
+      <div className="flex items-center justify-between px-6 py-4 border-b">
+        <div className="flex items-center gap-3">
           {icon}
           <h2 className="text-lg font-semibold">Start chatting with {title}</h2>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="p-2 hover:bg-gray-100 rounded-full">
-            <Settings className="w-5 h-5" />
+        <div className="flex items-center gap-3">
+          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <Settings className="w-5 h-5 text-gray-600" />
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full">
-            <RefreshCw className="w-5 h-5" />
+          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <RefreshCw className="w-5 h-5 text-gray-600" />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 p-4 overflow-auto">
-        <div className="text-sm text-gray-600 mb-4">
-          <p className="font-medium mb-1">Model Instructions:</p>
-          <p>{MODEL_INSTRUCTIONS}</p>
+      <div className="flex-1 p-6 overflow-auto">
+        <div className="text-sm text-gray-600 mb-6 bg-gray-50 rounded-lg p-4">
+          <p className="font-medium mb-2">Model Instructions:</p>
+          <p className="leading-relaxed">{MODEL_INSTRUCTIONS}</p>
         </div>
 
         {isLoading ? (
-          <div className="animate-pulse space-y-2">
+          <div className="animate-pulse space-y-3">
             <div className="h-4 bg-gray-200 rounded w-3/4"></div>
             <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
           </div>
         ) : response ? (
           <div className="whitespace-pre-wrap">{response}</div>
         ) : null}
       </div>
 
-      <div className="p-4 border-t">
+      <div className="p-6 border-t bg-gray-50">
         <QueryInput onSubmit={onSubmit} isLoading={isLoading} />
       </div>
     </div>
@@ -98,7 +99,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100">
       <div className="flex h-screen">
         {error && (
           <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
@@ -108,7 +109,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div className="flex-1 border-r">
+        <div className="flex-1 border-r border-gray-200">
           <ChatPanel
             title="Gemini"
             icon={<SiGoogle className="w-6 h-6 text-green-600" />}
@@ -119,7 +120,7 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className="flex-1 border-r">
+        <div className="flex-1 border-r border-gray-200">
           <ChatPanel
             title="OpenAI"
             icon={<SiOpenai className="w-6 h-6 text-blue-600" />}
