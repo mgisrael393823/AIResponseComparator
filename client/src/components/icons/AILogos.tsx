@@ -12,6 +12,8 @@ const useImageLoader = (src: string) => {
   useEffect(() => {
     const img = new Image();
     img.src = src;
+    console.log(`Attempting to load image from: ${src}`); // Debug log
+
     img.onload = () => {
       console.log(`Successfully loaded image: ${src}`);
       setLoading(false);
@@ -72,9 +74,10 @@ const AILogo = ({ src, alt, className, ...props }: AILogoProps) => {
   );
 };
 
+// Updated paths to use images directly from the root Images folder
 export const GeminiLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/Images/gemini-logo.png"
+    src="/gemini-logo.png"
     alt="Gemini AI Logo"
     {...props}
   />
@@ -82,7 +85,7 @@ export const GeminiLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
 
 export const OpenAILogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/Images/chatgpt-logo.png"
+    src="/chatgpt-logo.png"
     alt="ChatGPT Logo"
     {...props}
   />
@@ -90,7 +93,7 @@ export const OpenAILogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
 
 export const ClaudeLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/Images/claude-logo.png"
+    src="/claude-logo.png"
     alt="Claude AI Logo"
     {...props}
   />
