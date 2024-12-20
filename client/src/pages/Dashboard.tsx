@@ -4,7 +4,8 @@ import { Dices, Settings, RefreshCw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import QueryInput from "@/components/QueryInput";
 import { useToast } from "@/hooks/use-toast";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { compareResponses } from "@/lib/api";
 import type { AIResponse } from "@/lib/api";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 
@@ -69,35 +70,27 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
 };
 
 export default function Dashboard() {
-  const [query, setQuery] = useState("");
   const { toast } = useToast();
   const breakpoint = useBreakpoint();
 
-  const { data, isLoading, error, refetch } = useQuery<AIResponse>({
-    queryKey: ['/api/compare', query],
-    queryFn: async () => {
-      if (!query) return null;
-      const res = await fetch('/api/compare', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
+  const mutation = useMutation({
+    mutationFn: compareResponses,
+    onError: (error) => {
+      console.error('API Error:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to get AI responses",
+        variant: "destructive",
       });
-      if (!res.ok) throw new Error('Failed to fetch responses');
-      return res.json();
-    },
-    enabled: false,
+    }
   });
 
   const handleSubmit = async (input: string) => {
-    setQuery(input);
+    console.log('Submitting query:', input);
     try {
-      await refetch();
+      await mutation.mutateAsync(input);
     } catch (err) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch AI responses",
-        variant: "destructive",
-      });
+      console.error('Mutation error:', err);
     }
   };
 
@@ -118,10 +111,10 @@ export default function Dashboard() {
             <div className="w-3 h-3 rounded-full bg-green-500" />
           </div>
 
-          {error && (
+          {mutation.error && (
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
               <Card className="p-4 bg-destructive/10 text-destructive">
-                {(error as Error).message}
+                {(mutation.error as Error).message}
               </Card>
             </div>
           )}
@@ -132,8 +125,8 @@ export default function Dashboard() {
                 title="Gemini"
                 icon={<SiGoogle className="w-6 h-6 text-green-600" />}
                 accentColor="green"
-                response={data?.gemini}
-                isLoading={isLoading}
+                response={mutation.data?.gemini}
+                isLoading={mutation.isPending}
                 onSubmit={handleSubmit}
               />
             </div>
@@ -143,8 +136,8 @@ export default function Dashboard() {
                 title="OpenAI"
                 icon={<SiOpenai className="w-6 h-6 text-blue-600" />}
                 accentColor="blue"
-                response={data?.openai}
-                isLoading={isLoading}
+                response={mutation.data?.openai}
+                isLoading={mutation.isPending}
                 onSubmit={handleSubmit}
               />
             </div>
@@ -154,8 +147,8 @@ export default function Dashboard() {
                 title="Claude"
                 icon={<Dices className="w-6 h-6 text-purple-600" />}
                 accentColor="purple"
-                response={data?.claude}
-                isLoading={isLoading}
+                response={mutation.data?.claude}
+                isLoading={mutation.isPending}
                 onSubmit={handleSubmit}
               />
             </div>
