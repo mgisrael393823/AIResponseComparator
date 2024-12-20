@@ -10,8 +10,8 @@ import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { GeminiLogo, OpenAILogo, ClaudeLogo } from "@/components/icons/AILogos";
 
 const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
-  <div className="flex flex-col items-center justify-center p-4 border-b border-gray-200">
-    <div className="mb-2 w-12 h-12">{icon}</div>
+  <div className="ai-header flex flex-col items-center justify-center p-4 border-b border-gray-200">
+    <div className="mb-3">{icon}</div>
     <h2 className="text-sm font-medium text-gray-700">{title}</h2>
   </div>
 );
@@ -86,7 +86,7 @@ export default function Dashboard() {
         {/* Gemini Section */}
         <div className="flex flex-col h-full">
           <AIHeader
-            icon={<GeminiLogo className="w-12 h-12 text-[#0066FF]" />}
+            icon={<GeminiLogo />}
             title="Start chatting with Gemini"
           />
           <ResponseSection
@@ -98,7 +98,7 @@ export default function Dashboard() {
         {/* OpenAI Section */}
         <div className="flex flex-col h-full">
           <AIHeader
-            icon={<OpenAILogo className="w-12 h-12 text-[#19C37D]" />}
+            icon={<OpenAILogo />}
             title="Start chatting with ChatGPT"
           />
           <ResponseSection
@@ -110,7 +110,7 @@ export default function Dashboard() {
         {/* Claude Section */}
         <div className="flex flex-col h-full">
           <AIHeader
-            icon={<ClaudeLogo className="w-12 h-12 text-[#F2935C]" />}
+            icon={<ClaudeLogo />}
             title="Start chatting with Claude"
           />
           <ResponseSection
