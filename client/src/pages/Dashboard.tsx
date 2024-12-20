@@ -86,6 +86,15 @@ export default function Dashboard() {
   });
 
   const handleSubmit = async (input: string) => {
+    if (!input.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a message",
+        variant: "destructive",
+      });
+      return;
+    }
+
     console.log('Submitting query:', input);
     try {
       await mutation.mutateAsync(input);

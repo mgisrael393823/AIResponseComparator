@@ -5,17 +5,26 @@ export interface AIResponse {
 }
 
 export async function compareResponses(query: string): Promise<AIResponse> {
-  const response = await fetch('/api/compare', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query }),
-  });
+  try {
+    const response = await fetch('/api/compare', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+      credentials: 'include',
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to get AI responses');
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || `HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('API Response:', data);
+    return data;
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
   }
-
-  return response.json();
 }
