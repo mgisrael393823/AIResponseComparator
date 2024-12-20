@@ -1,16 +1,5 @@
-import { useState, KeyboardEvent } from "react";
-import { 
-  ChevronDown, 
-  Code, 
-  CornerUpRight,
-  RefreshCw, 
-  MoreHorizontal,
-  Mic,
-  Wand2
-} from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useState, KeyboardEvent, useEffect } from "react";
+import { Paperclip, ArrowUp } from "lucide-react";
 
 interface QueryInputProps {
   onSubmit: (query: string) => void;
@@ -19,7 +8,17 @@ interface QueryInputProps {
 
 const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
   const [input, setInput] = useState("");
-  const breakpoint = useBreakpoint();
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Handle scroll to top visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 200);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,142 +36,63 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
     }
   };
 
-  const iconButtonClasses = `
-    p-2 text-gray-500
-    hover:bg-gray-100 hover:-translate-y-0.5
-    active:translate-y-0 active:bg-gray-200
-    focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2
-    rounded-md transition-all duration-200
-    cursor-pointer relative
-    flex items-center justify-center
-    ${breakpoint === 'mobile' ? 'touch-manipulation min-h-[44px] min-w-[44px]' : ''}
-  `.trim();
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
-    <div className="sticky bottom-0 mx-4 mb-4">
-      <div className="bg-white border border-gray-200 rounded-lg shadow-sm">
-        {/* Message Input Section */}
-        <div className="p-4">
-          <Textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Send a message..."
-            className="w-full h-[56px] py-4 px-4 resize-none border-0 focus:ring-0 focus:border-0 text-gray-600 text-sm bg-white"
-            disabled={isLoading}
+    <div className="sticky bottom-0 px-4 py-3">
+      <form 
+        onSubmit={handleSubmit}
+        className="relative flex items-center gap-2 bg-[#f7f7f7] rounded-lg p-3"
+      >
+        {/* Text Input */}
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Example text.|"
+          className="flex-1 bg-transparent border-none outline-none text-gray-700 placeholder-gray-500"
+          disabled={isLoading}
+        />
+
+        {/* File Upload */}
+        <label className="cursor-pointer p-2 hover:bg-gray-200 rounded-full transition-colors">
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="hidden"
+            accept="image/*,.pdf,.doc,.docx"
           />
-        </div>
+          <Paperclip className="w-5 h-5 text-gray-500" />
+        </label>
 
-        {/* Separator */}
-        <div className="h-[1px] bg-gray-200" />
-
-        {/* Icons and Controls Section */}
-        <div className="h-[44px] px-4 flex items-center justify-between bg-white">
-          {/* Left side icons */}
-          <div className="flex items-center gap-2">
-            <button 
-              type="button"
-              aria-label="Model selection"
-              className={`${iconButtonClasses} group`}
-              role="button"
-              tabIndex={0}
-            >
-              <Wand2 className="w-5 h-5" />
-              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                Select model
-              </span>
-            </button>
-
-            {breakpoint !== 'mobile' && (
-              <>
-                <button 
-                  type="button"
-                  aria-label="Code block"
-                  className={`${iconButtonClasses} group`}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <Code className="w-5 h-5" />
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                    Insert code block
-                  </span>
-                </button>
-
-                <button 
-                  type="button"
-                  aria-label="Reply"
-                  className={`${iconButtonClasses} group`}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <CornerUpRight className="w-5 h-5" />
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                    Reply to message
-                  </span>
-                </button>
-
-                <button 
-                  type="button"
-                  aria-label="Refresh"
-                  className={`${iconButtonClasses} group`}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <RefreshCw className="w-5 h-5" />
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                    Refresh response
-                  </span>
-                </button>
-
-                <button 
-                  type="button"
-                  aria-label="More options"
-                  className={`${iconButtonClasses} group`}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <MoreHorizontal className="w-5 h-5" />
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                    More options
-                  </span>
-                </button>
-              </>
-            )}
+        {/* Selected File Name */}
+        {selectedFile && (
+          <div className="absolute -top-8 left-0 text-sm text-gray-600 bg-white px-2 py-1 rounded shadow-sm">
+            {selectedFile.name}
           </div>
+        )}
+      </form>
 
-          {/* Right side controls */}
-          <div className="flex items-center gap-4">
-            {breakpoint !== 'mobile' && (
-              <div className="flex items-center gap-2 group px-2 py-1 rounded-md hover:bg-gray-100 transition-colors cursor-pointer">
-                <Checkbox 
-                  id="sync"
-                  className="h-4 w-4 transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-200"
-                  aria-label="Sync messages"
-                />
-                <label 
-                  htmlFor="sync"
-                  className="text-sm text-gray-600 whitespace-nowrap select-none"
-                >
-                  Sync
-                </label>
-              </div>
-            )}
-
-            <button 
-              type="button"
-              aria-label="Voice input"
-              className={`${iconButtonClasses} group`}
-              role="button"
-              tabIndex={0}
-            >
-              <Mic className="w-5 h-5" />
-              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                Voice input
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-20 right-6 p-2 bg-black rounded-full shadow-lg hover:bg-gray-800 transition-colors"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="w-5 h-5 text-white" />
+        </button>
+      )}
     </div>
   );
 };
