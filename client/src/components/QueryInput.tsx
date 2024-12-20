@@ -40,24 +40,44 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
     <div className="flex flex-col border-t border-gray-200">
       <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-2 bg-gray-50 p-4">
         <div className="flex items-center gap-3">
-          <button type="button" className="p-2 text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-1">
+          <button 
+            type="button" 
+            aria-label="Model selection"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-1"
+          >
             <Wand2 className="w-5 h-5" />
             <ChevronDown className="w-4 h-4" />
           </button>
 
-          <button type="button" className="p-2 text-gray-500 hover:text-gray-700 transition-colors">
+          <button 
+            type="button" 
+            aria-label="Code block"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+          >
             <Code className="w-5 h-5" />
           </button>
 
-          <button type="button" className="p-2 text-gray-500 hover:text-gray-700 transition-colors">
+          <button 
+            type="button" 
+            aria-label="Reply"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+          >
             <CornerUpRight className="w-5 h-5" />
           </button>
 
-          <button type="button" className="p-2 text-gray-500 hover:text-gray-700 transition-colors">
+          <button 
+            type="button" 
+            aria-label="Refresh"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+          >
             <RefreshCw className="w-5 h-5" />
           </button>
 
-          <button type="button" className="p-2 text-gray-500 hover:text-gray-700 transition-colors">
+          <button 
+            type="button" 
+            aria-label="More options"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+          >
             <MoreHorizontal className="w-5 h-5" />
           </button>
         </div>
@@ -75,13 +95,24 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <Checkbox id="sync" className="h-4 w-4" />
-            <label htmlFor="sync" className="text-sm text-gray-600">
+            <Checkbox 
+              id="sync" 
+              className="h-4 w-4"
+              aria-label="Sync messages"
+            />
+            <label 
+              htmlFor="sync" 
+              className="text-sm text-gray-600"
+            >
               Sync
             </label>
           </div>
 
-          <button type="button" className="p-2 text-gray-500 hover:text-gray-700 transition-colors">
+          <button 
+            type="button" 
+            aria-label="Voice input"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+          >
             <Mic className="w-5 h-5" />
           </button>
         </div>
