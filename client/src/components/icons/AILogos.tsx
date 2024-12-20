@@ -13,13 +13,19 @@ const useImageLoader = (src: string) => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
+      console.log(`Successfully loaded image: ${src}`);
       setLoading(false);
       setError(false);
     };
-    img.onerror = () => {
-      console.error(`Failed to load image: ${src}`);
+    img.onerror = (e) => {
+      console.error(`Failed to load image: ${src}`, e);
       setLoading(false);
       setError(true);
+    };
+
+    return () => {
+      img.onload = null;
+      img.onerror = null;
     };
   }, [src]);
 
@@ -31,18 +37,20 @@ const AILogo = ({ src, alt, className, ...props }: AILogoProps) => {
 
   if (loading) {
     return (
-      <div className="logo-container animate-pulse">
+      <div className="logo-container animate-pulse" aria-label="Loading logo">
         <div className="w-12 h-12 bg-gray-200 rounded-full" />
       </div>
     );
   }
 
   if (error) {
-    console.warn(`Failed to load logo: ${src}`);
+    console.warn(`Falling back to text for logo: ${src}`);
     return (
-      <div className="logo-container">
+      <div className="logo-container" role="img" aria-label={alt}>
         <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
-          <span className="text-gray-400 text-xs">{alt.split(' ')[0]}</span>
+          <span className="text-gray-400 text-xs font-medium">
+            {alt.split(' ')[0]}
+          </span>
         </div>
       </div>
     );
@@ -54,6 +62,11 @@ const AILogo = ({ src, alt, className, ...props }: AILogoProps) => {
         src={src}
         alt={alt}
         className="ai-logo"
+        loading="lazy"
+        onError={(e) => {
+          console.error(`Runtime error loading image: ${src}`, e);
+          e.currentTarget.style.display = 'none';
+        }}
       />
     </div>
   );
@@ -61,7 +74,7 @@ const AILogo = ({ src, alt, className, ...props }: AILogoProps) => {
 
 export const GeminiLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/assets/gemini-logo.png"
+    src="/Images/gemini-logo.png"
     alt="Gemini AI Logo"
     {...props}
   />
@@ -69,7 +82,7 @@ export const GeminiLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
 
 export const OpenAILogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/assets/chatgpt-logo.png"
+    src="/Images/chatgpt-logo.png"
     alt="ChatGPT Logo"
     {...props}
   />
@@ -77,7 +90,7 @@ export const OpenAILogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
 
 export const ClaudeLogo = (props: Omit<AILogoProps, 'src' | 'alt'>) => (
   <AILogo
-    src="/assets/claude-logo.png"
+    src="/Images/claude-logo.png"
     alt="Claude AI Logo"
     {...props}
   />
