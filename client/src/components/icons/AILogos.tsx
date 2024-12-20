@@ -1,4 +1,4 @@
-import { type ComponentProps, useState } from "react";
+import { type ComponentProps, useState, useEffect } from "react";
 import { aiProfiles } from "@/lib/constants";
 
 interface LogoComponentProps {
@@ -10,8 +10,16 @@ interface LogoComponentProps {
 
 const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) => {
   const [error, setError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    // Reset states when logo path changes
+    setError(false);
+    setLoaded(false);
+  }, [logo]);
 
   if (error) {
+    console.log(`Using fallback for ${name} logo`);
     return (
       <div 
         className="logo-fallback" 
@@ -29,8 +37,12 @@ const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) =>
       <img
         src={logo}
         alt={alt}
-        className="ai-logo"
-        loading="lazy"
+        className={`ai-logo ${!loaded ? 'opacity-0' : 'opacity-100'}`}
+        loading="eager"
+        onLoad={() => {
+          console.log(`Successfully loaded ${name} logo`);
+          setLoaded(true);
+        }}
         onError={(e) => {
           console.error(`Failed to load logo for ${name}:`, e);
           setError(true);

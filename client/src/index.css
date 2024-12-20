@@ -18,23 +18,23 @@
   }
 
   .ai-logo {
-    @apply w-full h-full object-contain border-0 m-0 p-0;
+    @apply w-full h-full object-contain border-0 m-0 p-0 transition-opacity duration-200;
   }
 
   .logo-fallback {
-    @apply w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-medium;
+    @apply w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-medium transition-colors duration-200;
   }
 
   /* Specific colors for each AI */
   [data-ai="gemini"] .logo-fallback {
-    @apply text-blue-500;
+    @apply text-blue-500 bg-blue-50;
   }
 
   [data-ai="chatgpt"] .logo-fallback {
-    @apply text-green-500;
+    @apply text-green-500 bg-green-50;
   }
 
   [data-ai="claude"] .logo-fallback {
-    @apply text-purple-500;
+    @apply text-purple-500 bg-purple-50;
   }
 }

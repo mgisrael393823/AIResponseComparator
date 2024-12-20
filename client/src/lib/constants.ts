@@ -12,21 +12,21 @@ interface AIProfile {
 export const aiProfiles: AIProfile[] = [
   {
     name: 'Gemini',
-    logo: '/gemini-logo.png',  // Reference from public directory root
+    logo: '/public/gemini.png',  
     fallbackText: 'G',
     alt: 'Gemini AI Logo',
     title: 'Start chatting with Gemini'
   },
   {
     name: 'ChatGPT',
-    logo: '/chatgpt-logo.png',
+    logo: '/public/openai.png',
     fallbackText: 'GPT',
     alt: 'ChatGPT Logo',
     title: 'Start chatting with ChatGPT'
   },
   {
     name: 'Claude',
-    logo: '/claude-logo.png',
+    logo: '/public/claude-color.png',
     fallbackText: 'C',
     alt: 'Claude AI Logo',
     title: 'Start chatting with Claude'
