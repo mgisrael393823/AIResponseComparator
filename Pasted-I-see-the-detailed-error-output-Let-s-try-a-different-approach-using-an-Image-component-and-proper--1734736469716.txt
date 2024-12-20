@@ -1,0 +1,100 @@
+I see the detailed error output. Let's try a different approach using an Image component and proper error boundaries:
+
+```javascript
+const AILogo = ({ name }) => {
+  const [hasError, setHasError] = useState(false);
+  const [imgSrc, setImgSrc] = useState('');
+
+  useEffect(() => {
+    // Set image source based on AI name
+    const fileName = name.toLowerCase().replace(' ', '-');
+    try {
+      // Use dynamic import for images
+      import(`/assets/${fileName}-logo.png`)
+        .then(img => setImgSrc(img.default))
+        .catch(err => {
+          console.error(`Error loading ${name} logo:`, err);
+          setHasError(true);
+        });
+    } catch (err) {
+      console.error(`Error setting up ${name} logo:`, err);
+      setHasError(true);
+    }
+  }, [name]);
+
+  if (hasError || !imgSrc) {
+    return (
+      <div className="fallback-logo">
+        {name.charAt(0)}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={imgSrc}
+      alt={`${name} AI Logo`}
+      className="ai-logo"
+      onError={(e) => {
+        console.error(`Failed to load ${name} logo at runtime`);
+        setHasError(true);
+      }}
+      loading="eager"
+    />
+  );
+};
+```
+
+And update the styling to handle both the image and fallback cases:
+
+```css
+.ai-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.fallback-logo {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* Specific colors for each AI */
+[data-ai="gemini"] .fallback-logo {
+  color: #4285f4;
+}
+
+[data-ai="chatgpt"] .fallback-logo {
+  color: #19C37D;
+}
+
+[data-ai="claude"] .fallback-logo {
+  color: #6B4BCE;
+}
+```
+
+Then use it like this:
+
+```javascript
+<div className="ai-header" data-ai={name.toLowerCase()}>
+  <AILogo name={name} />
+  <h2>Start chatting with {name}</h2>
+</div>
+```
+
+This approach:
+1. Uses dynamic imports
+2. Has proper error handling
+3. Includes fallback display
+4. Handles loading states
+5. Provides detailed error logging
+6. Uses appropriate fallback styling
+
+Would you like me to explain any part in more detail?

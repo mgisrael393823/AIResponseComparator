@@ -20,4 +20,21 @@
   .ai-logo {
     @apply w-full h-full object-contain border-0 m-0 p-0;
   }
+
+  .logo-fallback {
+    @apply w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-medium;
+  }
+
+  /* Specific colors for each AI */
+  [data-ai="gemini"] .logo-fallback {
+    @apply text-blue-500;
+  }
+
+  [data-ai="chatgpt"] .logo-fallback {
+    @apply text-green-500;
+  }
+
+  [data-ai="claude"] .logo-fallback {
+    @apply text-purple-500;
+  }
 }

@@ -13,12 +13,13 @@ const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) =>
 
   if (error) {
     return (
-      <div className="logo-container" role="img" aria-label={alt}>
-        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
-          <span className="text-gray-400 text-xs font-medium">
-            {fallbackText}
-          </span>
-        </div>
+      <div 
+        className="logo-fallback" 
+        role="img" 
+        aria-label={alt}
+        data-ai={name.toLowerCase()}
+      >
+        <span>{fallbackText}</span>
       </div>
     );
   }
