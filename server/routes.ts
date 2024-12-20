@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { getOpenAIResponse } from "./services/openai";
+import { getClaudeResponse } from "./services/claude";
 
 export function registerRoutes(app: Express): Server {
   app.post("/api/compare", async (req, res) => {
@@ -10,11 +11,11 @@ export function registerRoutes(app: Express): Server {
         return res.status(400).json({ message: "Query is required" });
       }
 
-      // Get real OpenAI response, keep others simulated for now
+      // Get real OpenAI and Claude responses, keep Perplexity simulated for now
       const responses = {
         openai: await getOpenAIResponse(query),
         perplexity: "This is a simulated Perplexity response to: " + query,
-        claude: "This is a simulated Claude response to: " + query,
+        claude: await getClaudeResponse(query),
       };
 
       res.json(responses);
