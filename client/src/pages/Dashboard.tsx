@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { SiOpenai, SiGoogle } from "react-icons/si";
-import { Dices, Settings, Plus, Mic, RefreshCw } from "lucide-react";
+import { Settings } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import QueryInput from "@/components/QueryInput";
 import { useToast } from "@/hooks/use-toast";
@@ -8,10 +7,11 @@ import { useMutation } from "@tanstack/react-query";
 import { compareResponses } from "@/lib/api";
 import type { AIResponse } from "@/lib/api";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { GeminiLogo, OpenAILogo, ClaudeLogo } from "@/components/icons/AILogos";
 
-const AIHeader = ({ icon, title, color }: { icon: React.ReactNode; title: string; color: string }) => (
+const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <div className="flex flex-col items-center justify-center p-4 border-b border-gray-200">
-    <div className="mb-2">{icon}</div>
+    <div className="mb-2 w-12 h-12">{icon}</div>
     <h2 className="text-sm font-medium text-gray-700">{title}</h2>
   </div>
 );
@@ -86,9 +86,8 @@ export default function Dashboard() {
         {/* Gemini Section */}
         <div className="flex flex-col h-full">
           <AIHeader
-            icon={<SiGoogle className="w-8 h-8 text-[#0066FF]" />}
+            icon={<GeminiLogo className="w-12 h-12 text-[#0066FF]" />}
             title="Start chatting with Gemini"
-            color="blue"
           />
           <ResponseSection
             response={mutation.data?.gemini}
@@ -99,9 +98,8 @@ export default function Dashboard() {
         {/* OpenAI Section */}
         <div className="flex flex-col h-full">
           <AIHeader
-            icon={<SiOpenai className="w-8 h-8 text-[#19C37D]" />}
+            icon={<OpenAILogo className="w-12 h-12 text-[#19C37D]" />}
             title="Start chatting with ChatGPT"
-            color="green"
           />
           <ResponseSection
             response={mutation.data?.openai}
@@ -112,9 +110,8 @@ export default function Dashboard() {
         {/* Claude Section */}
         <div className="flex flex-col h-full">
           <AIHeader
-            icon={<Dices className="w-8 h-8 text-[#6B4BCE]" />}
+            icon={<ClaudeLogo className="w-12 h-12 text-[#F2935C]" />}
             title="Start chatting with Claude"
-            color="purple"
           />
           <ResponseSection
             response={mutation.data?.claude}
