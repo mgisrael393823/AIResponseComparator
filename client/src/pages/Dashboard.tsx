@@ -8,8 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import type { AIResponse } from "@/lib/api";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 
-const MODEL_INSTRUCTIONS = `I want you to act as a rival chess player. We will say our moves in reciprocal order. In the beginning, I will be white. Also, please don't explain your moves to me because we are rivals. After my first message, I will just write my move. Don't forget to update the state of the board in your mind as we make moves.`;
-
 interface ChatPanelProps {
   title: string;
   icon: React.ReactNode;
@@ -52,11 +50,6 @@ const ChatPanel = ({ title, icon, accentColor, response, isLoading, onSubmit }: 
       </div>
 
       <div className={`flex-1 overflow-y-auto min-h-0 ${contentClasses}`}>
-        <div className="text-sm text-gray-600 mb-6 bg-gray-50 rounded-lg p-4">
-          <p className="font-medium mb-2">Model Instructions <span className="text-gray-400">(click to edit)</span></p>
-          <p className="leading-relaxed text-[13px] md:text-sm">{MODEL_INSTRUCTIONS}</p>
-        </div>
-
         {isLoading ? (
           <div className="animate-pulse space-y-3">
             <div className="h-4 bg-gray-200 rounded w-3/4"></div>
