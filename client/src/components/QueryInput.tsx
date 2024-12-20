@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, KeyboardEvent } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,8 +13,18 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
     onSubmit(input.trim());
+    setInput(""); // Clear input after submission
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!input.trim() || isLoading) return;
+      onSubmit(input.trim());
+      setInput(""); // Clear input after submission
+    }
   };
 
   return (
@@ -22,7 +32,8 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
       <Textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="Enter your question or message..."
+        onKeyDown={handleKeyDown}
+        placeholder="Enter your question or message... (Press Enter to send, Shift+Enter for new line)"
         className="min-h-[100px] resize-none"
         disabled={isLoading}
       />
