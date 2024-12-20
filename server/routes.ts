@@ -7,42 +7,38 @@ import { getGeminiResponse } from "./services/gemini";
 export function registerRoutes(app: Express): Server {
   app.post("/api/compare", async (req, res) => {
     try {
-      console.log("Received compare request:", req.body);
+      console.log("Received compare request with body:", req.body);
       const { query } = req.body;
 
-      if (!query) {
-        return res.status(400).json({ message: "Query is required" });
+      if (!query || typeof query !== 'string') {
+        console.error("Invalid query in request body:", req.body);
+        return res.status(400).json({ message: "Query must be a non-empty string" });
       }
 
-      // Execute API calls in parallel and handle individual failures
-      const [openaiResponse, geminiResponse, claudeResponse] = await Promise.allSettled([
-        getOpenAIResponse(query).catch(error => {
-          console.error("OpenAI API error:", error);
-          return `Error: ${error.message}`;
-        }),
-        getGeminiResponse(query).catch(error => {
-          console.error("Gemini API error:", error);
-          return `Error: ${error.message}`;
-        }),
-        getClaudeResponse(query).catch(error => {
-          console.error("Claude API error:", error);
-          return `Error: ${error.message}`;
-        })
+      console.log("Processing query:", query);
+
+      // Execute API calls in parallel
+      const results = await Promise.allSettled([
+        getOpenAIResponse(query),
+        getGeminiResponse(query),
+        getClaudeResponse(query)
       ]);
 
+      console.log("API responses received:", results);
+
+      // Process results
       const responses = {
-        openai: openaiResponse.status === 'fulfilled' ? openaiResponse.value : 'Failed to get OpenAI response',
-        gemini: geminiResponse.status === 'fulfilled' ? geminiResponse.value : 'Failed to get Gemini response',
-        claude: claudeResponse.status === 'fulfilled' ? claudeResponse.value : 'Failed to get Claude response',
+        openai: results[0].status === 'fulfilled' ? results[0].value : `Error: ${results[0].status === 'rejected' ? results[0].reason.message : 'Unknown error'}`,
+        gemini: results[1].status === 'fulfilled' ? results[1].value : `Error: ${results[1].status === 'rejected' ? results[1].reason.message : 'Unknown error'}`,
+        claude: results[2].status === 'fulfilled' ? results[2].value : `Error: ${results[2].status === 'rejected' ? results[2].reason.message : 'Unknown error'}`
       };
 
-      console.log("Sending responses:", responses);
+      console.log("Sending final response:", responses);
       res.json(responses);
     } catch (error) {
-      console.error("Error processing AI comparison:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to process AI comparison";
+      console.error("Error processing compare request:", error);
+      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
       const statusCode = errorMessage.includes('API key') ? 401 : 500;
-
       res.status(statusCode).json({ message: errorMessage });
     }
   });
