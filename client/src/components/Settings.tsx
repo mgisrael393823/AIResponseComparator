@@ -9,7 +9,7 @@ import { Settings2 } from "lucide-react"
 
 export function SettingsMenu() {
   return (
-    <div className="relative z-50">
+    <div className="fixed top-4 right-4 z-[100]">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button 
