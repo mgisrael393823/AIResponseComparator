@@ -9,28 +9,30 @@ import { Settings2 } from "lucide-react"
 
 export function SettingsMenu() {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon"
-          className="relative z-50 h-9 w-9 hover:bg-accent active:bg-accent/90"
-        >
-          <Settings2 className="h-5 w-5" />
-          <span className="sr-only">Open settings menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem>
-          Theme Settings
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          API Configuration
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          Preferences
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="relative z-50">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            className="h-9 w-9 hover:bg-accent active:bg-accent/90"
+          >
+            <Settings2 className="h-5 w-5" />
+            <span className="sr-only">Open settings menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48" sideOffset={8}>
+          <DropdownMenuItem onClick={() => console.log('Theme clicked')}>
+            Theme Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => console.log('API clicked')}>
+            API Configuration
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => console.log('Preferences clicked')}>
+            Preferences
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   )
 }

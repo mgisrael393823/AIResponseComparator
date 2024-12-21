@@ -363,7 +363,7 @@ const SidebarHeader = React.forwardRef<
       data-sidebar="header"
       className={cn(
         "relative flex flex-col gap-2 p-2", 
-        "[&>*]:z-50", // Ensure all children have proper z-index
+        "z-40", // Lower z-index than dropdown but higher than content
         className
       )}
       {...props}
