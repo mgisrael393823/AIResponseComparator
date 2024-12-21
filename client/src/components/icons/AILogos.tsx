@@ -1,5 +1,6 @@
 import { type ComponentProps, useState, useEffect } from "react";
 import { aiProfiles } from "@/lib/constants";
+import { useToast } from "@/hooks/use-toast";
 
 interface LogoComponentProps {
   logo: string;
@@ -11,15 +12,37 @@ interface LogoComponentProps {
 const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) => {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Reset states when logo path changes
     setError(false);
     setLoaded(false);
-  }, [logo]);
+
+    // Preload image
+    const img = new Image();
+    img.src = logo;
+
+    img.onload = () => {
+      setLoaded(true);
+    };
+
+    img.onerror = () => {
+      setError(true);
+      toast({
+        title: "Image Load Error",
+        description: `Failed to load ${name} logo`,
+        variant: "destructive",
+      });
+    };
+
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, [logo, name, toast]);
 
   if (error) {
-    console.log(`Using fallback for ${name} logo`);
     return (
       <div 
         className="logo-fallback" 
@@ -27,7 +50,7 @@ const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) =>
         aria-label={alt}
         data-ai={name.toLowerCase()}
       >
-        <span>{fallbackText}</span>
+        {fallbackText}
       </div>
     );
   }
@@ -37,16 +60,8 @@ const LogoComponent = ({ logo, name, fallbackText, alt }: LogoComponentProps) =>
       <img
         src={logo}
         alt={alt}
-        className={`ai-logo ${!loaded ? 'opacity-0' : 'opacity-100'}`}
+        className={`ai-logo ${loaded ? 'opacity-100' : 'opacity-0'}`}
         loading="eager"
-        onLoad={() => {
-          console.log(`Successfully loaded ${name} logo`);
-          setLoaded(true);
-        }}
-        onError={(e) => {
-          console.error(`Failed to load logo for ${name}:`, e);
-          setError(true);
-        }}
       />
     </div>
   );
