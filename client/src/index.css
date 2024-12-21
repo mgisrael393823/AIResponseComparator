@@ -9,6 +9,11 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    @apply relative min-h-screen;
+  }
+
+  #root {
+    @apply relative min-h-screen;
   }
 }
 
