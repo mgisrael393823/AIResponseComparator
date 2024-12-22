@@ -4,11 +4,16 @@ import { SettingsMenu } from "@/components/Settings";
 
 function App() {
   return (
-    <div className="relative min-h-screen">
-      <div className="fixed top-0 right-0 z-50 p-4">
+    <div className="relative min-h-screen w-full">
+      {/* Settings Menu with proper positioning and stacking context */}
+      <div 
+        className="fixed top-4 right-4 z-50"
+        style={{ isolation: 'isolate' }}
+      >
         <SettingsMenu />
       </div>
-      <main className="min-h-screen">
+
+      <main className="relative min-h-screen w-full">
         <Switch>
           <Route path="/" component={Dashboard} />
         </Switch>
