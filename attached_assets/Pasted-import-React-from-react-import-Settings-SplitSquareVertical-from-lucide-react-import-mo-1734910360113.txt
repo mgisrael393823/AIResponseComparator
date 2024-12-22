@@ -1,0 +1,72 @@
+import React from 'react';
+import { Settings, SplitSquareVertical } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const ChatHeader = () => {
+  return (
+    <div className="border-b border-gray-200 bg-white">
+      {/* Header with controls */}
+      <div className="flex items-center justify-between px-4 py-2">
+        <h1 className="text-lg font-semibold text-gray-900">New Chat</h1>
+        <div className="flex items-center gap-2">
+          <button
+            className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+            aria-label="Add Split Chat"
+          >
+            <SplitSquareVertical className="h-4 w-4" />
+            <span>Add Split Chat</span>
+          </button>
+          <button
+            className="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+            aria-label="Settings"
+          >
+            <Settings className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* AI Options Grid */}
+      <motion.div 
+        className="grid grid-cols-3 divide-x divide-gray-200"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <button className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 transition-colors">
+          <div className="mb-3 h-12 w-12 flex items-center justify-center">
+            <img 
+              src="/assets/gemini-logo.png" 
+              alt="Gemini" 
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <span className="text-sm font-medium text-gray-700">Start chatting with Gemini</span>
+        </button>
+
+        <button className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 transition-colors">
+          <div className="mb-3 h-12 w-12 flex items-center justify-center">
+            <img 
+              src="/assets/chatgpt-logo.png" 
+              alt="ChatGPT" 
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <span className="text-sm font-medium text-gray-700">Start chatting with ChatGPT</span>
+        </button>
+
+        <button className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 transition-colors">
+          <div className="mb-3 h-12 w-12 flex items-center justify-center">
+            <img 
+              src="/assets/claude-logo.png" 
+              alt="Claude" 
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <span className="text-sm font-medium text-gray-700">Start chatting with Claude</span>
+        </button>
+      </motion.div>
+    </div>
+  );
+};
+
+export default ChatHeader;
