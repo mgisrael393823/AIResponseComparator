@@ -7,7 +7,6 @@ import { useMutation } from "@tanstack/react-query";
 import { compareResponses } from "@/lib/api";
 import type { AIResponse } from "@/lib/api";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { GeminiLogo, OpenAILogo, ClaudeLogo } from "@/components/icons/AILogos";
 import ResponsePanel from "@/components/ResponsePanel";
 import { motion } from "framer-motion";
 
@@ -101,7 +100,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<GeminiLogo />}
+            icon={<img src="/assets/gemini-logo.png" alt="Gemini AI" className="w-full h-full object-contain" />}
             title="Start chatting with Gemini"
           />
           <ResponsePanel
@@ -121,7 +120,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<OpenAILogo />}
+            icon={<img src="/assets/chatgpt-logo.png" alt="ChatGPT" className="w-full h-full object-contain" />}
             title="Start chatting with ChatGPT"
           />
           <ResponsePanel
@@ -141,7 +140,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<ClaudeLogo />}
+            icon={<img src="/assets/claude-logo.png" alt="Claude AI" className="w-full h-full object-contain" />}
             title="Start chatting with Claude"
           />
           <ResponsePanel
