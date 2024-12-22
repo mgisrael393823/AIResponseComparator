@@ -10,6 +10,7 @@ import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { GeminiLogo, OpenAILogo, ClaudeLogo } from "@/components/icons/AILogos";
 import ResponsePanel from "@/components/ResponsePanel";
 import { motion } from "framer-motion";
+import { ChatHeader } from "@/components/ChatHeader";
 
 const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <motion.div 
@@ -81,14 +82,8 @@ export default function Dashboard() {
       animate="visible"
       variants={containerVariants}
     >
-      {/* Header */}
-      <header className="h-12 flex items-center justify-between px-4 border-b border-gray-200">
-        <span className="text-sm font-medium">New Chat</span>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">Add Split Chat</span>
-          <Settings className="w-5 h-5 text-gray-600" />
-        </div>
-      </header>
+      {/* Replace the old header with the new ChatHeader component */}
+      <ChatHeader />
 
       {/* Main Content */}
       <main className={`flex-1 grid ${containerClasses} divide-x divide-gray-200 overflow-hidden`}>

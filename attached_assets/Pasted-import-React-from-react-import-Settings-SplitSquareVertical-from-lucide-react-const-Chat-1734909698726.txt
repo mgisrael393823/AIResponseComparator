@@ -1,0 +1,56 @@
+import React from 'react';
+import { Settings, SplitSquareVertical } from 'lucide-react';
+
+const ChatHeader = () => {
+  return (
+    <div className="w-full border-b border-gray-200">
+      <div className="flex items-center justify-between px-4 py-2">
+        <h1 className="text-lg font-semibold">New Chat</h1>
+        
+        {/* Controls container with proper spacing */}
+        <div className="flex items-center space-x-4">
+          {/* Split Chat button with label */}
+          <button 
+            className="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+          >
+            <SplitSquareVertical className="h-4 w-4" />
+            <span>Add Split Chat</span>
+          </button>
+          
+          {/* Settings button */}
+          <button 
+            className="p-2 text-gray-700 hover:bg-gray-100 rounded-full"
+          >
+            <Settings className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Chat options grid */}
+      <div className="grid grid-cols-3 gap-4 p-4">
+        <button className="flex flex-col items-center p-4 space-y-2 rounded-lg hover:bg-gray-50">
+          <div className="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center">
+            G
+          </div>
+          <span className="text-sm">Start chatting with Gemini</span>
+        </button>
+
+        <button className="flex flex-col items-center p-4 space-y-2 rounded-lg hover:bg-gray-50">
+          <div className="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center">
+            GPT
+          </div>
+          <span className="text-sm">Start chatting with ChatGPT</span>
+        </button>
+
+        <button className="flex flex-col items-center p-4 space-y-2 rounded-lg hover:bg-gray-50">
+          <div className="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center">
+            C
+          </div>
+          <span className="text-sm">Start chatting with Claude</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ChatHeader;
