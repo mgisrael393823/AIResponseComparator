@@ -33,16 +33,25 @@
     @apply transition-colors duration-300 ease-in-out;
   }
 
-  /* Specific colors for each AI */
-  [data-ai="gemini"] .logo-fallback {
-    @apply text-blue-500 bg-blue-50;
+  /* Specific colors for each AI fallback */
+  [data-ai="gemini"] {
+    @apply hover:bg-blue-50;
+    .logo-fallback {
+      @apply text-blue-500 bg-blue-50;
+    }
   }
 
-  [data-ai="chatgpt"] .logo-fallback {
-    @apply text-green-500 bg-green-50;
+  [data-ai="chatgpt"] {
+    @apply hover:bg-green-50;
+    .logo-fallback {
+      @apply text-green-500 bg-green-50;
+    }
   }
 
-  [data-ai="claude"] .logo-fallback {
-    @apply text-purple-500 bg-purple-50;
+  [data-ai="claude"] {
+    @apply hover:bg-purple-50;
+    .logo-fallback {
+      @apply text-purple-500 bg-purple-50;
+    }
   }
 }
