@@ -8,26 +8,19 @@ import { compareResponses } from "@/lib/api";
 import type { AIResponse } from "@/lib/api";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { GeminiLogo, OpenAILogo, ClaudeLogo } from "@/components/icons/AILogos";
+import ResponsePanel from "@/components/ResponsePanel";
+import { motion } from "framer-motion";
 
 const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
-  <div className="ai-header flex flex-col items-center justify-center p-4 border-b border-gray-200">
+  <motion.div 
+    className="ai-header flex flex-col items-center justify-center p-4 border-b border-gray-200"
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+  >
     <div className="mb-3">{icon}</div>
     <h2 className="text-sm font-medium text-gray-700">{title}</h2>
-  </div>
-);
-
-const ResponseSection = ({ response, isLoading }: { response?: string; isLoading: boolean }) => (
-  <div className="p-4">
-    {isLoading ? (
-      <div className="animate-pulse space-y-3">
-        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-      </div>
-    ) : response ? (
-      <div className="whitespace-pre-wrap text-sm">{response}</div>
-    ) : null}
-  </div>
+  </motion.div>
 );
 
 export default function Dashboard() {
@@ -70,8 +63,24 @@ export default function Dashboard() {
     desktop: "grid-cols-3",
   }[breakpoint];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <motion.div 
+      className="h-screen flex flex-col bg-white"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
       {/* Header */}
       <header className="h-12 flex items-center justify-between px-4 border-b border-gray-200">
         <span className="text-sm font-medium">New Chat</span>
@@ -84,56 +93,90 @@ export default function Dashboard() {
       {/* Main Content */}
       <main className={`flex-1 grid ${containerClasses} divide-x divide-gray-200 overflow-hidden`}>
         {/* Gemini Section */}
-        <div className="flex flex-col h-full">
+        <motion.div 
+          className="flex flex-col h-full"
+          variants={{
+            hidden: { opacity: 0, x: -20 },
+            visible: { opacity: 1, x: 0 }
+          }}
+        >
           <AIHeader
             icon={<GeminiLogo />}
             title="Start chatting with Gemini"
           />
-          <ResponseSection
+          <ResponsePanel
+            title="Gemini Response"
             response={mutation.data?.gemini}
             isLoading={mutation.isPending}
+            accentColor="blue"
           />
-        </div>
+        </motion.div>
 
         {/* OpenAI Section */}
-        <div className="flex flex-col h-full">
+        <motion.div 
+          className="flex flex-col h-full"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0 }
+          }}
+        >
           <AIHeader
             icon={<OpenAILogo />}
             title="Start chatting with ChatGPT"
           />
-          <ResponseSection
+          <ResponsePanel
+            title="ChatGPT Response"
             response={mutation.data?.openai}
             isLoading={mutation.isPending}
+            accentColor="green"
           />
-        </div>
+        </motion.div>
 
         {/* Claude Section */}
-        <div className="flex flex-col h-full">
+        <motion.div 
+          className="flex flex-col h-full"
+          variants={{
+            hidden: { opacity: 0, x: 20 },
+            visible: { opacity: 1, x: 0 }
+          }}
+        >
           <AIHeader
             icon={<ClaudeLogo />}
             title="Start chatting with Claude"
           />
-          <ResponseSection
+          <ResponsePanel
+            title="Claude Response"
             response={mutation.data?.claude}
             isLoading={mutation.isPending}
+            accentColor="purple"
           />
-        </div>
+        </motion.div>
       </main>
 
       {/* Footer Input */}
-      <footer className="border-t border-gray-200 bg-white">
+      <motion.footer 
+        className="border-t border-gray-200 bg-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
         <div className="max-w-3xl mx-auto px-4 py-3">
           <QueryInput onSubmit={handleSubmit} isLoading={mutation.isPending} />
         </div>
-      </footer>
+      </motion.footer>
 
       {mutation.error && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2">
+        <motion.div 
+          className="fixed top-4 left-1/2 transform -translate-x-1/2"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
           <Card className="p-4 bg-destructive/10 text-destructive">
             {(mutation.error as Error).message}
           </Card>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }
