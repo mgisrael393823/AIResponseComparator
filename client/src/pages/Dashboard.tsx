@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Settings } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import QueryInput from "@/components/QueryInput";
 import { useToast } from "@/hooks/use-toast";
@@ -80,15 +79,6 @@ export default function Dashboard() {
       animate="visible"
       variants={containerVariants}
     >
-      {/* Header */}
-      <header className="h-12 flex items-center justify-between px-4 border-b border-gray-200">
-        <span className="text-sm font-medium">New Chat</span>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">Add Split Chat</span>
-          <Settings className="w-5 h-5 text-gray-600" />
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className={`flex-1 grid ${containerClasses} divide-x divide-gray-200 overflow-hidden`}>
         {/* Gemini Section */}
@@ -104,7 +94,6 @@ export default function Dashboard() {
             title="Start chatting with Gemini"
           />
           <ResponsePanel
-            title="Gemini Response"
             response={mutation.data?.gemini}
             isLoading={mutation.isPending}
             accentColor="blue"
@@ -124,7 +113,6 @@ export default function Dashboard() {
             title="Start chatting with ChatGPT"
           />
           <ResponsePanel
-            title="ChatGPT Response"
             response={mutation.data?.openai}
             isLoading={mutation.isPending}
             accentColor="green"
@@ -144,7 +132,6 @@ export default function Dashboard() {
             title="Start chatting with Claude"
           />
           <ResponsePanel
-            title="Claude Response"
             response={mutation.data?.claude}
             isLoading={mutation.isPending}
             accentColor="purple"
