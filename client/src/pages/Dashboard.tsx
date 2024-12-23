@@ -9,7 +9,7 @@ import ResponsePanel from "@/components/ResponsePanel";
 
 const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <motion.div 
-    className="ai-header flex flex-col items-center justify-center p-3 md:p-4 lg:p-6 border-b border-gray-200"
+    className="flex flex-col items-center justify-center p-2 md:p-4 space-y-2 border-b border-gray-200"
     initial={{ opacity: 0, y: -20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
@@ -70,7 +70,7 @@ export default function Dashboard() {
       variants={containerVariants}
     >
       {/* Main Content */}
-      <main className="flex-1 flex overflow-x-auto">
+      <main className="flex-1 grid grid-cols-3 gap-2 md:gap-4 lg:gap-6 p-2 md:p-4 lg:p-6 overflow-hidden">
         {/* Gemini Section */}
         <motion.div 
           className="flex-1 min-w-[300px] border-r border-gray-200"
@@ -136,7 +136,7 @@ export default function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="max-w-4xl mx-auto px-4 py-4 md:py-6">
+        <div className="max-w-full md:max-w-3xl mx-auto px-2 md:px-4 py-2 md:py-3">
           <QueryInput 
             onSubmit={handleSubmit} 
             isLoading={mutation.isPending}

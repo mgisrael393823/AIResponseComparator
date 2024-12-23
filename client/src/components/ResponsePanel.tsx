@@ -26,7 +26,7 @@ const ResponsePanel = ({
       colorClasses,
       !response && !isLoading && "opacity-50"
     )}>
-      <CardContent className="p-4 md:p-6 lg:p-8">
+      <CardContent className="p-2 md:p-4 lg:p-6">
         <AnimatePresence mode="wait">
           {isLoading ? (
             <motion.div
