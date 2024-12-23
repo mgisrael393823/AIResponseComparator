@@ -1,10 +1,24 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import dns from 'dns';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Add DNS resolution logging
+app.use((req, res, next) => {
+  const hostname = req.hostname;
+  dns.resolve(hostname, (err, addresses) => {
+    if (err) {
+      log(`DNS Resolution Error for ${hostname}: ${err.message}`);
+    } else {
+      log(`DNS Resolution Success for ${hostname}: ${addresses.join(', ')}`);
+    }
+  });
+  next();
+});
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -47,7 +61,6 @@ app.use((req, res, next) => {
       const message = err.message || "Internal Server Error";
       log(`Error: ${status} - ${message}`);
       res.status(status).json({ message });
-      throw err;
     });
 
     // Setup environment-specific middleware
@@ -61,9 +74,26 @@ app.use((req, res, next) => {
     const PORT = 5000;
     server.listen(PORT, "0.0.0.0", () => {
       log(`Server successfully started and listening on port ${PORT}`);
-      // Log additional information about the server binding
       log(`Server is bound to all interfaces (0.0.0.0) for custom domain support`);
       log(`Environment: ${app.get("env")}`);
+      log(`Checking DNS resolution...`);
+
+      // Check DNS resolution for the server
+      dns.resolve4('0.0.0.0', (err, addresses) => {
+        if (err) {
+          log(`DNS Initial Check Error: ${err.message}`);
+        } else {
+          log(`DNS Initial Check Success: ${addresses.join(', ')}`);
+        }
+      });
+    }).on('error', (err: NodeJS.ErrnoException) => {
+      if (err.code === 'EADDRINUSE') {
+        log(`Port ${PORT} is already in use. Please ensure no other instances are running.`);
+        process.exit(1);
+      } else {
+        log(`Server error: ${err.message}`);
+        throw err;
+      }
     });
 
     // Graceful shutdown
