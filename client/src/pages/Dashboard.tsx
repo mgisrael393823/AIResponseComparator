@@ -100,7 +100,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<img src="/assets/Gemini.png" alt="Gemini AI" className="w-full h-full object-contain" />}
+            icon={<img src="/assets/Gemini.png" alt="Gemini AI" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain" />}
             title="Start chatting with Gemini"
           />
           <ResponsePanel
@@ -120,7 +120,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<img src="/assets/ChatGPT.png" alt="ChatGPT" className="w-full h-full object-contain" />}
+            icon={<img src="/assets/ChatGPT.png" alt="ChatGPT" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain" />}
             title="Start chatting with ChatGPT"
           />
           <ResponsePanel
@@ -140,7 +140,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<img src="/assets/Claude.png" alt="Claude AI" className="w-full h-full object-contain" />}
+            icon={<img src="/assets/Claude.png" alt="Claude AI" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain" />}
             title="Start chatting with Claude"
           />
           <ResponsePanel
