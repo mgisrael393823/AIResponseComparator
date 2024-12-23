@@ -10,7 +10,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Settings2 } from "lucide-react"
@@ -49,30 +48,24 @@ export function SettingsMenu() {
           className="z-[51] w-48" 
           sideOffset={8}
         >
-          <DialogTrigger asChild>
-            <DropdownMenuItem 
-              className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-              onSelect={() => setOpenDialog('theme')}
-            >
-              Theme Settings
-            </DropdownMenuItem>
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <DropdownMenuItem 
-              className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-              onSelect={() => setOpenDialog('api')}
-            >
-              API Configuration
-            </DropdownMenuItem>
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <DropdownMenuItem 
-              className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-              onSelect={() => setOpenDialog('preferences')}
-            >
-              Preferences
-            </DropdownMenuItem>
-          </DialogTrigger>
+          <DropdownMenuItem 
+            className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
+            onSelect={() => setOpenDialog('theme')}
+          >
+            Theme Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
+            onSelect={() => setOpenDialog('api')}
+          >
+            API Configuration
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
+            onSelect={() => setOpenDialog('preferences')}
+          >
+            Preferences
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
