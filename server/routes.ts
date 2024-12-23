@@ -12,13 +12,19 @@ export function registerRoutes(app: Express): Server {
 
   app.post("/api/compare", async (req, res) => {
     try {
-      const { query } = req.body;
+      const { query, files } = req.body;
+      const queryText = query || '';
+      const attachments = files || [];
 
-      if (!query || typeof query !== 'string') {
+      if (!queryText.trim() && attachments.length === 0) {
         return res.status(400).json({ 
-          message: "Invalid request: query must be a non-empty string" 
+          message: "Invalid request: must provide either text or files" 
         });
       }
+
+      const contextString = attachments.length 
+        ? `${queryText}\n[Attached files: ${attachments.map(f => f.name).join(', ')}]`
+        : queryText;
 
       // Execute API calls in parallel
       const results = await Promise.allSettled([

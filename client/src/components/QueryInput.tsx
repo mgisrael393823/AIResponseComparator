@@ -27,18 +27,8 @@ const QueryInput = ({ onSubmit, isLoading, className }: QueryInputProps) => {
       onSubmit(input.trim(), attachedFiles);
       setInput("");
       setAttachedFiles([]);
-      toast({
-        title: "Message sent",
-        description: attachedFiles.length 
-          ? `Sent message with ${attachedFiles.length} attachment(s)`
-          : "Sent message successfully",
-      });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
+      console.error('Failed to send message:', error);
     }
   };
 
