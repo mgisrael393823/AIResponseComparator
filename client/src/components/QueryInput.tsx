@@ -8,9 +8,10 @@ import { useToast } from "@/hooks/use-toast";
 interface QueryInputProps {
   onSubmit: (query: string, files?: File[]) => void;
   isLoading: boolean;
+  className?: string;
 }
 
-const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
+const QueryInput = ({ onSubmit, isLoading, className }: QueryInputProps) => {
   const [input, setInput] = useState("");
   const [syncEnabled, setSyncEnabled] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
@@ -20,7 +21,6 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
 
-    // Allow submission if there's either text input or files
     if ((!input.trim() && attachedFiles.length === 0) || isLoading) return;
 
     try {
@@ -42,7 +42,7 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
@@ -69,7 +69,7 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className={`space-y-4 ${className}`}>
       {showUpload && (
         <div className="rounded-lg border border-border bg-background p-4">
           <FileUpload
@@ -82,29 +82,28 @@ const QueryInput = ({ onSubmit, isLoading }: QueryInputProps) => {
 
       <form 
         onSubmit={handleSubmit}
-        className="flex items-center gap-3 bg-background rounded-lg border border-border px-3 py-2"
+        className="flex items-start gap-3 bg-background rounded-lg border border-border p-3"
       >
         <Button
           type="button"
           variant="ghost"
           size="icon"
-          className="h-8 w-8"
+          className="h-8 w-8 mt-1"
           onClick={() => setShowUpload(!showUpload)}
         >
           <Paperclip className="h-4 w-4" />
         </Button>
 
-        <input
-          type="text"
+        <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={attachedFiles.length ? `${attachedFiles.length} file(s) attached` : "Type your message..."}
-          className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
+          className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground min-h-[80px] resize-none py-1"
           disabled={isLoading}
         />
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mt-1">
           <div className="flex items-center gap-2">
             <Checkbox
               id="sync"
