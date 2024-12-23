@@ -5,7 +5,7 @@ export interface AIResponse {
 }
 
 export async function compareResponses(query: string): Promise<AIResponse> {
-  console.log('Sending compare request with query:', query);
+  console.log('Starting API request with query:', query);
 
   try {
     const response = await fetch('/api/compare', {
@@ -14,7 +14,7 @@ export async function compareResponses(query: string): Promise<AIResponse> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query }),
-      credentials: 'include', // Added back from original code
+      credentials: 'include',
     });
 
     // Log raw response for debugging

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import QueryInput from "@/components/QueryInput";
 import { useToast } from "@/hooks/use-toast";
@@ -23,8 +23,16 @@ const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => 
 export default function Dashboard() {
   const { toast } = useToast();
 
+  useEffect(() => {
+    console.log('Dashboard mounted');
+    return () => console.log('Dashboard unmounted');
+  }, []);
+
   const mutation = useMutation({
     mutationFn: compareResponses,
+    onMutate: (variables) => {
+      console.log('Starting mutation with query:', variables);
+    },
     onError: (error) => {
       console.error('API Error:', error);
       toast({
@@ -32,10 +40,17 @@ export default function Dashboard() {
         description: error instanceof Error ? error.message : "Failed to get AI responses",
         variant: "destructive",
       });
+    },
+    onSuccess: (data) => {
+      console.log('Mutation succeeded:', data);
+    },
+    onSettled: () => {
+      console.log('Mutation settled');
     }
   });
 
   const handleSubmit = async (input: string) => {
+    console.log('Handling submit with input:', input);
     if (!input.trim()) {
       toast({
         title: "Error",
@@ -52,23 +67,11 @@ export default function Dashboard() {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
   return (
     <motion.div 
       className="h-screen flex flex-col bg-white max-w-7xl mx-auto p-4 md:p-6 lg:p-8"
       initial="hidden"
       animate="visible"
-      variants={containerVariants}
     >
       {/* Main Content */}
       <main className="flex-1 overflow-hidden">
