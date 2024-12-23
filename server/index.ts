@@ -37,51 +37,73 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = registerRoutes(app);
+  try {
+    // Create HTTP server
+    const server = registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    // Error handling middleware
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
+      log(`Error: ${status} - ${message}`);
+      res.status(status).json({ message });
+      throw err;
+    });
 
-    res.status(status).json({ message });
-    throw err;
-  });
+    // Setup environment-specific middleware
+    if (app.get("env") === "development") {
+      await setupVite(app, server);
+    } else {
+      serveStatic(app);
+    }
 
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+    // Try alternate ports if 5000 is busy
+    const ports = [5000, 5001, 5002];
+    let currentPortIndex = 0;
+    let serverStarted = false;
 
-  // Try multiple ports if the default is in use
-  const startServer = async (port: number = 5000, maxRetries: number = 3): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const handleError = (error: any) => {
-        if (error.code === 'EADDRINUSE' && maxRetries > 0) {
-          log(`Port ${port} in use, trying port ${port + 1}`);
-          server.removeAllListeners();
-          startServer(port + 1, maxRetries - 1)
-            .then(resolve)
-            .catch(reject);
-        } else {
-          log(`Failed to start server: ${error.message}`);
-          reject(error);
-        }
-      };
+    while (currentPortIndex < ports.length && !serverStarted) {
+      const PORT = ports[currentPortIndex];
+      try {
+        await new Promise<void>((resolve, reject) => {
+          server
+            .listen(PORT, "0.0.0.0")
+            .once("listening", () => {
+              log(`Server successfully started and listening on port ${PORT}`);
+              serverStarted = true;
+              resolve();
+            })
+            .once("error", (error: any) => {
+              if (error.code === "EADDRINUSE") {
+                log(`Port ${PORT} is in use, trying next port...`);
+                currentPortIndex++;
+                resolve();
+              } else {
+                reject(error);
+              }
+            });
+        });
+      } catch (error) {
+        log(`Error starting server on port ${PORT}: ${error}`);
+        currentPortIndex++;
+      }
+    }
 
-      server.once('error', handleError);
+    if (!serverStarted) {
+      throw new Error("Failed to start server on any available port");
+    }
 
-      server.listen(port, "0.0.0.0", () => {
-        log(`serving on port ${port}`);
-        resolve();
+    // Graceful shutdown
+    process.on("SIGTERM", () => {
+      log("Received SIGTERM signal, shutting down gracefully");
+      server.close(() => {
+        log("Server closed");
+        process.exit(0);
       });
     });
-  };
 
-  try {
-    await startServer();
   } catch (error) {
-    log(`Fatal error starting server: ${error}`);
+    log(`Fatal error: ${error}`);
     process.exit(1);
   }
 })();
