@@ -4,10 +4,8 @@ import QueryInput from "@/components/QueryInput";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { compareResponses } from "@/lib/api";
-import type { AIResponse } from "@/lib/api";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { motion, AnimatePresence } from "framer-motion";
 import ResponsePanel from "@/components/ResponsePanel";
-import { motion } from "framer-motion";
 
 const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <motion.div 
@@ -23,7 +21,6 @@ const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => 
 
 export default function Dashboard() {
   const { toast } = useToast();
-  const breakpoint = useBreakpoint();
 
   const mutation = useMutation({
     mutationFn: compareResponses,
@@ -47,19 +44,12 @@ export default function Dashboard() {
       return;
     }
 
-    console.log('Submitting query:', input);
     try {
       await mutation.mutateAsync(input);
     } catch (err) {
       console.error('Mutation error:', err);
     }
   };
-
-  const containerClasses = {
-    mobile: "grid-cols-1",
-    tablet: "grid-cols-2",
-    desktop: "grid-cols-3",
-  }[breakpoint];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -80,10 +70,10 @@ export default function Dashboard() {
       variants={containerVariants}
     >
       {/* Main Content */}
-      <main className={`flex-1 grid ${containerClasses} divide-x divide-gray-200 overflow-hidden`}>
+      <main className="flex-1 flex overflow-x-auto">
         {/* Gemini Section */}
         <motion.div 
-          className="flex flex-col h-full"
+          className="flex-1 min-w-[300px] border-r border-gray-200"
           variants={{
             hidden: { opacity: 0, x: -20 },
             visible: { opacity: 1, x: 0 }
@@ -102,7 +92,7 @@ export default function Dashboard() {
 
         {/* OpenAI Section */}
         <motion.div 
-          className="flex flex-col h-full"
+          className="flex-1 min-w-[300px] border-r border-gray-200"
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0 }
@@ -121,7 +111,7 @@ export default function Dashboard() {
 
         {/* Claude Section */}
         <motion.div 
-          className="flex flex-col h-full"
+          className="flex-1 min-w-[300px]"
           variants={{
             hidden: { opacity: 0, x: 20 },
             visible: { opacity: 1, x: 0 }
