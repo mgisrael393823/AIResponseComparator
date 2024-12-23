@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 
 const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <motion.div 
-    className="ai-header flex flex-col items-center justify-center p-4 border-b border-gray-200"
+    className="ai-header flex flex-col items-center justify-center p-3 md:p-4 lg:p-6 border-b border-gray-200"
     initial={{ opacity: 0, y: -20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
@@ -74,7 +74,7 @@ export default function Dashboard() {
 
   return (
     <motion.div 
-      className="h-screen flex flex-col bg-white"
+      className="h-screen flex flex-col bg-white max-w-7xl mx-auto p-4 md:p-6 lg:p-8"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -90,7 +90,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<img src="/assets/Gemini.png" alt="Gemini AI" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain" />}
+            icon={<img src="/assets/Gemini.png" alt="Gemini AI" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
             title="Start chatting with Gemini"
           />
           <ResponsePanel
@@ -109,7 +109,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<img src="/assets/ChatGPT.png" alt="ChatGPT" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain" />}
+            icon={<img src="/assets/ChatGPT.png" alt="ChatGPT" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
             title="Start chatting with ChatGPT"
           />
           <ResponsePanel
@@ -128,7 +128,7 @@ export default function Dashboard() {
           }}
         >
           <AIHeader
-            icon={<img src="/assets/Claude.png" alt="Claude AI" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain" />}
+            icon={<img src="/assets/Claude.png" alt="Claude AI" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
             title="Start chatting with Claude"
           />
           <ResponsePanel
@@ -146,8 +146,12 @@ export default function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="max-w-3xl mx-auto px-4 py-3">
-          <QueryInput onSubmit={handleSubmit} isLoading={mutation.isPending} />
+        <div className="max-w-4xl mx-auto px-4 py-4 md:py-6">
+          <QueryInput 
+            onSubmit={handleSubmit} 
+            isLoading={mutation.isPending}
+            className="min-h-[60px] md:min-h-[80px]"
+          />
         </div>
       </motion.footer>
 
