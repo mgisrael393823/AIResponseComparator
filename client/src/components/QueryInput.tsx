@@ -21,7 +21,7 @@ const QueryInput = ({ onSubmit, isLoading, className }: QueryInputProps) => {
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
 
-    if ((!input.trim() && attachedFiles.length === 0) || isLoading) return;
+    if ((attachedFiles.length === 0 && !input.trim()) || isLoading) return;
 
     try {
       onSubmit(input.trim(), attachedFiles);
