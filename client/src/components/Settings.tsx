@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Settings2 } from "lucide-react"
@@ -48,62 +49,76 @@ export function SettingsMenu() {
           className="z-[51] w-48" 
           sideOffset={8}
         >
-          <DropdownMenuItem 
-            className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-            onSelect={() => setOpenDialog('theme')}
-          >
-            Theme Settings
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-            onSelect={() => setOpenDialog('api')}
-          >
-            API Configuration
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-            onSelect={() => setOpenDialog('preferences')}
-          >
-            Preferences
-          </DropdownMenuItem>
+          <Dialog open={openDialog === 'theme'} onOpenChange={(open) => handleOpenChange(open)}>
+            <DialogTrigger asChild>
+              <DropdownMenuItem 
+                className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setOpenDialog('theme');
+                }}
+              >
+                Theme Settings
+              </DropdownMenuItem>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Theme Settings</DialogTitle>
+                <DialogDescription>
+                  Customize the appearance of your application
+                </DialogDescription>
+              </DialogHeader>
+              <ThemeSettings onClose={() => setOpenDialog(null)} />
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={openDialog === 'api'} onOpenChange={(open) => handleOpenChange(open)}>
+            <DialogTrigger asChild>
+              <DropdownMenuItem 
+                className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setOpenDialog('api');
+                }}
+              >
+                API Configuration
+              </DropdownMenuItem>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>API Configuration</DialogTitle>
+                <DialogDescription>
+                  Configure your AI model API keys and settings
+                </DialogDescription>
+              </DialogHeader>
+              <APIConfiguration onClose={() => setOpenDialog(null)} />
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={openDialog === 'preferences'} onOpenChange={(open) => handleOpenChange(open)}>
+            <DialogTrigger asChild>
+              <DropdownMenuItem 
+                className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setOpenDialog('preferences');
+                }}
+              >
+                Preferences
+              </DropdownMenuItem>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Preferences</DialogTitle>
+                <DialogDescription>
+                  Customize your chat experience
+                </DialogDescription>
+              </DialogHeader>
+              <Preferences onClose={() => setOpenDialog(null)} />
+            </DialogContent>
+          </Dialog>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <Dialog open={openDialog === 'theme'} onOpenChange={handleOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Theme Settings</DialogTitle>
-            <DialogDescription>
-              Customize the appearance of your application
-            </DialogDescription>
-          </DialogHeader>
-          <ThemeSettings onClose={() => setOpenDialog(null)} />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={openDialog === 'api'} onOpenChange={handleOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>API Configuration</DialogTitle>
-            <DialogDescription>
-              Configure your AI model API keys and settings
-            </DialogDescription>
-          </DialogHeader>
-          <APIConfiguration onClose={() => setOpenDialog(null)} />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={openDialog === 'preferences'} onOpenChange={handleOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Preferences</DialogTitle>
-            <DialogDescription>
-              Customize your chat experience
-            </DialogDescription>
-          </DialogHeader>
-          <Preferences onClose={() => setOpenDialog(null)} />
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
