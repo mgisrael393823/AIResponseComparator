@@ -57,41 +57,14 @@ app.use((req, res, next) => {
       serveStatic(app);
     }
 
-    // Try alternate ports if 5000 is busy
-    const ports = [5000, 5001, 5002];
-    let currentPortIndex = 0;
-    let serverStarted = false;
-
-    while (currentPortIndex < ports.length && !serverStarted) {
-      const PORT = ports[currentPortIndex];
-      try {
-        await new Promise<void>((resolve, reject) => {
-          server
-            .listen(PORT, "0.0.0.0")
-            .once("listening", () => {
-              log(`Server successfully started and listening on port ${PORT}`);
-              serverStarted = true;
-              resolve();
-            })
-            .once("error", (error: any) => {
-              if (error.code === "EADDRINUSE") {
-                log(`Port ${PORT} is in use, trying next port...`);
-                currentPortIndex++;
-                resolve();
-              } else {
-                reject(error);
-              }
-            });
-        });
-      } catch (error) {
-        log(`Error starting server on port ${PORT}: ${error}`);
-        currentPortIndex++;
-      }
-    }
-
-    if (!serverStarted) {
-      throw new Error("Failed to start server on any available port");
-    }
+    // Always serve on port 5000 as required by Replit
+    const PORT = 5000;
+    server.listen(PORT, "0.0.0.0", () => {
+      log(`Server successfully started and listening on port ${PORT}`);
+      // Log additional information about the server binding
+      log(`Server is bound to all interfaces (0.0.0.0) for custom domain support`);
+      log(`Environment: ${app.get("env")}`);
+    });
 
     // Graceful shutdown
     process.on("SIGTERM", () => {
