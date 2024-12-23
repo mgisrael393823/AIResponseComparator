@@ -21,10 +21,17 @@ const QueryInput = ({ onSubmit, isLoading, className }: QueryInputProps) => {
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
 
-    if ((attachedFiles.length === 0 && !input.trim()) || isLoading) return;
+    if (attachedFiles.length === 0 && !input.trim() || isLoading) {
+      toast({
+        title: "Error",
+        description: "Please enter a message or attach a file",
+        variant: "destructive"
+      });
+      return;
+    }
 
     try {
-      onSubmit(input.trim(), attachedFiles);
+      onSubmit(input.trim() || " ", attachedFiles);
       setInput("");
       setAttachedFiles([]);
     } catch (error) {
