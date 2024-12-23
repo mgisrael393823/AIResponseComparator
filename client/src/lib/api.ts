@@ -1,7 +1,7 @@
 export interface AIResponse {
-  openai: string;
-  gemini: string;
-  claude: string;
+  openai: string | null;
+  gemini: string | null;
+  claude: string | null;
 }
 
 export async function compareResponses(query: string): Promise<AIResponse> {
