@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { compareResponses } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import ResponsePanel from "@/components/ResponsePanel";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 const AIHeader = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <motion.div 
@@ -70,63 +71,60 @@ export default function Dashboard() {
       variants={containerVariants}
     >
       {/* Main Content */}
-      <main className="flex-1 grid grid-cols-3 gap-2 md:gap-4 lg:gap-6 p-2 md:p-4 lg:p-6 overflow-hidden">
-        {/* Gemini Section */}
-        <motion.div 
-          className="flex-1 min-w-[300px] border-r border-gray-200"
-          variants={{
-            hidden: { opacity: 0, x: -20 },
-            visible: { opacity: 1, x: 0 }
-          }}
+      <main className="flex-1 overflow-hidden">
+        <ResizablePanelGroup 
+          direction="horizontal" 
+          className="h-full rounded-lg border"
         >
-          <AIHeader
-            icon={<img src="/assets/Gemini.png" alt="Gemini AI" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
-            title="Start chatting with Gemini"
-          />
-          <ResponsePanel
-            response={mutation.data?.gemini}
-            isLoading={mutation.isPending}
-            accentColor="blue"
-          />
-        </motion.div>
+          {/* Gemini Section */}
+          <ResizablePanel defaultSize={33.33}>
+            <div className="h-full">
+              <AIHeader
+                icon={<img src="/assets/Gemini.png" alt="Gemini AI" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
+                title="Start chatting with Gemini"
+              />
+              <ResponsePanel
+                response={mutation.data?.gemini}
+                isLoading={mutation.isPending}
+                accentColor="blue"
+              />
+            </div>
+          </ResizablePanel>
 
-        {/* OpenAI Section */}
-        <motion.div 
-          className="flex-1 min-w-[300px] border-r border-gray-200"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 }
-          }}
-        >
-          <AIHeader
-            icon={<img src="/assets/ChatGPT.png" alt="ChatGPT" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
-            title="Start chatting with ChatGPT"
-          />
-          <ResponsePanel
-            response={mutation.data?.openai}
-            isLoading={mutation.isPending}
-            accentColor="green"
-          />
-        </motion.div>
+          <ResizableHandle withHandle />
 
-        {/* Claude Section */}
-        <motion.div 
-          className="flex-1 min-w-[300px]"
-          variants={{
-            hidden: { opacity: 0, x: 20 },
-            visible: { opacity: 1, x: 0 }
-          }}
-        >
-          <AIHeader
-            icon={<img src="/assets/Claude.png" alt="Claude AI" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
-            title="Start chatting with Claude"
-          />
-          <ResponsePanel
-            response={mutation.data?.claude}
-            isLoading={mutation.isPending}
-            accentColor="purple"
-          />
-        </motion.div>
+          {/* OpenAI Section */}
+          <ResizablePanel defaultSize={33.33}>
+            <div className="h-full">
+              <AIHeader
+                icon={<img src="/assets/ChatGPT.png" alt="ChatGPT" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
+                title="Start chatting with ChatGPT"
+              />
+              <ResponsePanel
+                response={mutation.data?.openai}
+                isLoading={mutation.isPending}
+                accentColor="green"
+              />
+            </div>
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          {/* Claude Section */}
+          <ResizablePanel defaultSize={33.33}>
+            <div className="h-full">
+              <AIHeader
+                icon={<img src="/assets/Claude.png" alt="Claude AI" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain" />}
+                title="Start chatting with Claude"
+              />
+              <ResponsePanel
+                response={mutation.data?.claude}
+                isLoading={mutation.isPending}
+                accentColor="purple"
+              />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </main>
 
       {/* Footer Input */}
