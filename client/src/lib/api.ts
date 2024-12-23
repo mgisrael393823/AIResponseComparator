@@ -4,8 +4,8 @@ export interface AIResponse {
   claude: string | null;
 }
 
-export async function compareResponses(query: string): Promise<AIResponse> {
-  console.log('Starting API request with query:', query);
+export async function compareResponses(query: string, files?: File[]): Promise<AIResponse> {
+  console.log('Starting API request with query:', query, 'files:', files);
 
   try {
     const response = await fetch('/api/compare', {
@@ -13,7 +13,10 @@ export async function compareResponses(query: string): Promise<AIResponse> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ 
+        query,
+        files: files?.map(f => ({ name: f.name, content: f.text }))
+      }),
       credentials: 'include',
     });
 

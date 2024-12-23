@@ -104,8 +104,8 @@ const QueryInput = ({ onSubmit, isLoading, className }: QueryInputProps) => {
               Sync
             </label>
           </div>
-          <Button type="submit" disabled={isLoading} variant="ghost" size="icon" className="h-8 w-8">
-            <Plus className="h-4 w-4" />
+          <Button type="submit" disabled={isLoading} variant="ghost" className="h-8 px-3">
+            Send
           </Button>
         </div>
       </form>
