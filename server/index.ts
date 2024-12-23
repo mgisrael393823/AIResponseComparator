@@ -2,10 +2,23 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import dns from 'dns';
+import { exec } from 'child_process';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Clean up any existing process on port 5000
+const cleanupPort = () => {
+  return new Promise<void>((resolve, reject) => {
+    exec('kill-port 5000', (error) => {
+      if (error) {
+        log('No existing process on port 5000');
+      }
+      resolve();
+    });
+  });
+};
 
 // Add DNS resolution logging
 app.use((req, res, next) => {
@@ -52,6 +65,9 @@ app.use((req, res, next) => {
 
 (async () => {
   try {
+    // Clean up port before starting
+    await cleanupPort();
+
     // Create HTTP server
     const server = registerRoutes(app);
 
@@ -72,29 +88,37 @@ app.use((req, res, next) => {
 
     // Always serve on port 5000 as required by Replit
     const PORT = 5000;
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`Server successfully started and listening on port ${PORT}`);
-      log(`Server is bound to all interfaces (0.0.0.0) for custom domain support`);
-      log(`Environment: ${app.get("env")}`);
-      log(`Checking DNS resolution...`);
 
-      // Check DNS resolution for the server
-      dns.resolve4('0.0.0.0', (err, addresses) => {
-        if (err) {
-          log(`DNS Initial Check Error: ${err.message}`);
+    const startServer = () => {
+      server.listen(PORT, "0.0.0.0", () => {
+        log(`Server successfully started and listening on port ${PORT}`);
+        log(`Server is bound to all interfaces (0.0.0.0) for custom domain support`);
+        log(`Environment: ${app.get("env")}`);
+        log(`Checking DNS resolution...`);
+
+        // Check DNS resolution for the server
+        dns.resolve4('0.0.0.0', (err, addresses) => {
+          if (err) {
+            log(`DNS Initial Check Error: ${err.message}`);
+          } else {
+            log(`DNS Initial Check Success: ${addresses.join(', ')}`);
+          }
+        });
+      }).on('error', (err: NodeJS.ErrnoException) => {
+        if (err.code === 'EADDRINUSE') {
+          log(`Port ${PORT} is already in use. Attempting to clean up...`);
+          cleanupPort().then(() => {
+            log(`Retrying server start...`);
+            setTimeout(startServer, 1000);
+          });
         } else {
-          log(`DNS Initial Check Success: ${addresses.join(', ')}`);
+          log(`Server error: ${err.message}`);
+          throw err;
         }
       });
-    }).on('error', (err: NodeJS.ErrnoException) => {
-      if (err.code === 'EADDRINUSE') {
-        log(`Port ${PORT} is already in use. Please ensure no other instances are running.`);
-        process.exit(1);
-      } else {
-        log(`Server error: ${err.message}`);
-        throw err;
-      }
-    });
+    };
+
+    startServer();
 
     // Graceful shutdown
     process.on("SIGTERM", () => {
