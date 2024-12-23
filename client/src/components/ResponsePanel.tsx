@@ -1,17 +1,15 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ResponsePanelProps {
-  title: string;
   response?: string;
   isLoading: boolean;
   accentColor: string;
 }
 
 const ResponsePanel = ({
-  title,
   response,
   isLoading,
   accentColor,
@@ -28,10 +26,7 @@ const ResponsePanel = ({
       colorClasses,
       !response && !isLoading && "opacity-50"
     )}>
-      <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-4">
         <AnimatePresence mode="wait">
           {isLoading ? (
             <motion.div
@@ -59,17 +54,7 @@ const ResponsePanel = ({
             >
               <p className="whitespace-pre-wrap">{response}</p>
             </motion.div>
-          ) : (
-            <motion.p
-              key="empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-muted-foreground text-sm"
-            >
-              No response yet
-            </motion.p>
-          )}
+          ) : null}
         </AnimatePresence>
       </CardContent>
     </Card>
