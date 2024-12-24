@@ -1,11 +1,12 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { setupWebSocket } from "./websocket";
 import { getOpenAIResponse } from "./services/openai";
 import { getClaudeResponse } from "./services/claude";
 import { getGeminiResponse } from "./services/gemini";
 import { log } from "./vite";
 import { db } from "@db";
-import { apiSettings } from "@db/schema";
+import { apiSettings, collaborationSessions, sessionParticipants, sharedResponses } from "@db/schema";
 import { eq } from "drizzle-orm";
 
 interface AttachedFile {
@@ -15,9 +16,54 @@ interface AttachedFile {
 }
 
 export function registerRoutes(app: Express): Server {
+  // Create HTTP server
+  const httpServer = createServer(app);
+
+  // Setup WebSocket server
+  setupWebSocket(httpServer);
+
   // Health check endpoint
   app.get("/api/health", (_req, res) => {
     res.json({ status: "healthy" });
+  });
+
+  // Collaboration session endpoints
+  app.post("/api/sessions", async (req, res) => {
+    try {
+      const { name, userId } = req.body;
+      const session = await db.insert(collaborationSessions)
+        .values({
+          name,
+          createdBy: userId,
+        })
+        .returning();
+
+      res.json(session[0]);
+    } catch (error) {
+      log(`Error creating session: ${error}`);
+      res.status(500).json({ message: "Failed to create collaboration session" });
+    }
+  });
+
+  app.get("/api/sessions/:id", async (req, res) => {
+    try {
+      const session = await db.query.collaborationSessions.findFirst({
+        where: eq(collaborationSessions.id, req.params.id),
+        with: {
+          participants: true,
+          responses: true,
+        },
+      });
+
+      if (!session) {
+        return res.status(404).json({ message: "Session not found" });
+      }
+
+      res.json(session);
+    } catch (error) {
+      log(`Error fetching session: ${error}`);
+      res.status(500).json({ message: "Failed to fetch session details" });
+    }
   });
 
   // Get API settings
@@ -153,6 +199,5 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  const httpServer = createServer(app);
   return httpServer;
 }
