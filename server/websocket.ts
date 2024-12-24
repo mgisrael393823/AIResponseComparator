@@ -3,7 +3,7 @@ import { type Server } from 'http';
 import { log } from './vite';
 import { db } from '@db';
 import { collaborationSessions, sessionParticipants, sharedResponses } from '@db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and, lt } from 'drizzle-orm';
 
 interface WebSocketMessage {
   type: 'join_session' | 'leave_session' | 'new_response' | 'participant_update';
@@ -39,7 +39,7 @@ export function setupWebSocket(server: Server) {
           case 'join_session':
             // Update client's session
             client.sessionId = msg.sessionId;
-            
+
             // Add participant to session
             await db.insert(sessionParticipants).values({
               sessionId: msg.sessionId,
@@ -60,8 +60,10 @@ export function setupWebSocket(server: Server) {
               // Update last active timestamp
               await db.update(sessionParticipants)
                 .set({ lastActiveAt: new Date() })
-                .where(eq(sessionParticipants.sessionId, client.sessionId))
-                .where(eq(sessionParticipants.userId, client.userId));
+                .where(and(
+                  eq(sessionParticipants.sessionId, client.sessionId),
+                  eq(sessionParticipants.userId, client.userId)
+                ));
 
               // Notify other participants
               broadcastToSession(client.sessionId, {
@@ -102,8 +104,10 @@ export function setupWebSocket(server: Server) {
         // Update participant's last active time
         await db.update(sessionParticipants)
           .set({ lastActiveAt: new Date() })
-          .where(eq(sessionParticipants.sessionId, client.sessionId))
-          .where(eq(sessionParticipants.userId, client.userId));
+          .where(and(
+            eq(sessionParticipants.sessionId, client.sessionId),
+            eq(sessionParticipants.userId, client.userId)
+          ));
 
         // Notify other participants
         broadcastToSession(client.sessionId, {
@@ -133,8 +137,10 @@ export function setupWebSocket(server: Server) {
       const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
       await db.update(collaborationSessions)
         .set({ isActive: false })
-        .where(eq(collaborationSessions.isActive, true))
-        .where('created_at', '<', thirtyMinutesAgo);
+        .where(and(
+          eq(collaborationSessions.isActive, true),
+          lt(collaborationSessions.createdAt, thirtyMinutesAgo)
+        ));
     } catch (error) {
       log(`Session cleanup error: ${error}`);
     }
