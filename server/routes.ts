@@ -4,6 +4,9 @@ import { getOpenAIResponse } from "./services/openai";
 import { getClaudeResponse } from "./services/claude";
 import { getGeminiResponse } from "./services/gemini";
 import { log } from "./vite";
+import { db } from "@db";
+import { apiSettings } from "@db/schema";
+import { eq } from "drizzle-orm";
 
 interface AttachedFile {
   name: string;
@@ -15,6 +18,63 @@ export function registerRoutes(app: Express): Server {
   // Health check endpoint
   app.get("/api/health", (_req, res) => {
     res.json({ status: "healthy" });
+  });
+
+  // Get API settings
+  app.get("/api/settings", async (req, res) => {
+    try {
+      // For now, we'll just return the first user's settings
+      // In a real app, you'd get the current user's ID from the session
+      const settings = await db.query.apiSettings.findFirst();
+
+      // Return masked API keys
+      if (settings) {
+        const maskedSettings = {
+          openaiApiKey: settings.openaiApiKey ? "••••" + settings.openaiApiKey.slice(-4) : "",
+          anthropicApiKey: settings.anthropicApiKey ? "••••" + settings.anthropicApiKey.slice(-4) : "",
+          geminiApiKey: settings.geminiApiKey ? "••••" + settings.geminiApiKey.slice(-4) : "",
+        };
+        res.json(maskedSettings);
+      } else {
+        res.json({
+          openaiApiKey: "",
+          anthropicApiKey: "",
+          geminiApiKey: "",
+        });
+      }
+    } catch (error) {
+      log(`Error fetching API settings: ${error}`);
+      res.status(500).json({ message: "Failed to fetch API settings" });
+    }
+  });
+
+  // Update API settings
+  app.post("/api/settings", async (req, res) => {
+    try {
+      const { openaiApiKey, anthropicApiKey, geminiApiKey } = req.body;
+
+      // For now, we'll just update the first user's settings
+      // In a real app, you'd get the current user's ID from the session
+      const existingSettings = await db.query.apiSettings.findFirst();
+
+      if (existingSettings) {
+        await db.update(apiSettings)
+          .set({ openaiApiKey, anthropicApiKey, geminiApiKey })
+          .where(eq(apiSettings.id, existingSettings.id));
+      } else {
+        await db.insert(apiSettings).values({
+          userId: 1, // Temporary: In real app, get from session
+          openaiApiKey,
+          anthropicApiKey,
+          geminiApiKey,
+        });
+      }
+
+      res.json({ message: "Settings updated successfully" });
+    } catch (error) {
+      log(`Error updating API settings: ${error}`);
+      res.status(500).json({ message: "Failed to update API settings" });
+    }
   });
 
   app.post("/api/compare", async (req, res) => {
@@ -38,17 +98,25 @@ export function registerRoutes(app: Express): Server {
 
       log(`Making API requests with context: "${contextString.substring(0, 50)}..."`);
 
-      // Execute API calls in parallel
+      // Get API settings
+      const settings = await db.query.apiSettings.findFirst();
+      if (!settings) {
+        return res.status(400).json({ 
+          message: "Please configure your API keys in settings first" 
+        });
+      }
+
+      // Execute API calls in parallel with user's API keys
       const results = await Promise.allSettled([
-        getOpenAIResponse(contextString).catch(err => {
+        getOpenAIResponse(contextString, settings.openaiApiKey).catch(err => {
           log(`OpenAI API error: ${err.message}`);
           throw err;
         }),
-        getGeminiResponse(contextString).catch(err => {
+        getGeminiResponse(contextString, settings.geminiApiKey).catch(err => {
           log(`Gemini API error: ${err.message}`);
           throw err;
         }),
-        getClaudeResponse(contextString).catch(err => {
+        getClaudeResponse(contextString, settings.anthropicApiKey).catch(err => {
           log(`Claude API error: ${err.message}`);
           throw err;
         })

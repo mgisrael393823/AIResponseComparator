@@ -2,30 +2,20 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Log API key presence (not the actual key)
 console.log("Checking Gemini API key configuration...");
-if (!process.env.GEMINI_API_KEY) {
-  throw new Error('GEMINI_API_KEY must be set in environment variables');
-}
 
-// Validate API key format and check for spaces
-const apiKey = process.env.GEMINI_API_KEY.trim();
-console.log("API Key Length:", apiKey.length);
-
-// Initialize Gemini client
-let genAI: GoogleGenerativeAI;
-try {
-  genAI = new GoogleGenerativeAI(apiKey);
-  console.log("Gemini client initialized successfully");
-} catch (error) {
-  console.error('Failed to initialize Gemini client:', error);
-  throw new Error('Failed to initialize Gemini client. Please check your API key configuration.');
-}
-
-export async function getGeminiResponse(query: string): Promise<string> {
+export async function getGeminiResponse(query: string, apiKey: string): Promise<string> {
   if (!query.trim()) {
     throw new Error('Query cannot be empty');
   }
 
+  if (!apiKey) {
+    throw new Error('Gemini API key is required');
+  }
+
   try {
+    console.log('Initializing Gemini client...');
+    const genAI = new GoogleGenerativeAI(apiKey);
+
     console.log('Sending request to Gemini API...');
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
     const result = await model.generateContent(query);
