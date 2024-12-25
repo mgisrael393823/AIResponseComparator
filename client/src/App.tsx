@@ -1,9 +1,11 @@
-import { Switch, Route } from "wouter";
+import React from "react";
+import { Switch, Route, Routes, Navigate, useRoutes } from "wouter";
 import Dashboard from "@/pages/Dashboard";
 import { SettingsMenu } from "@/components/Settings";
 import { Plus, SplitSquareHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import routes from "tempo-routes";
 
 function App() {
   return (
@@ -34,9 +36,12 @@ function App() {
         </div>
 
         <main className="relative min-h-screen w-full pt-14">
-          <Switch>
+          {import.meta.env.VITE_TEMPO && useRoutes(routes)}
+          <Routes>
             <Route path="/" component={Dashboard} />
-          </Switch>
+            {import.meta.env.VITE_TEMPO && <Route path="/tempobook/*" />}
+            <Route path="*" element={<Navigate to="login" />} />
+          </Routes>
         </main>
       </div>
     </ErrorBoundary>
