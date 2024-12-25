@@ -7,8 +7,23 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const conditionalPlugins = [];
+
+if (process.env.TEMPO) {
+  conditionalPlugins.push('tempo-devtools/dist/babel-plugin');
+}
+
 export default defineConfig({
-  plugins: [react(), runtimeErrorOverlay(), themePlugin()],
+  plugins: [
+    react({
+      babel: {
+        plugins: [...conditionalPlugins]
+      }
+    }),
+    runtimeErrorOverlay(),
+    themePlugin()
+  ],
   resolve: {
     alias: {
       "@db": path.resolve(__dirname, "db"),
